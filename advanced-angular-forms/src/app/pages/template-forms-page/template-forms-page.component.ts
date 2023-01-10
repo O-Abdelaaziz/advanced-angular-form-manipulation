@@ -1,3 +1,4 @@
+import { UserInfo } from './../../model/user-info';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +15,19 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class TemplateFormsPageComponent implements OnInit {
+
+  userInfo: UserInfo = {
+    firstName: 'Ouakala',
+    lastName: 'Abdelaaziz',
+    nickname: '',
+    email: '',
+    yearOfBirth: 0,
+    passport: '',
+    fullAdress: '',
+    city: '',
+    postCode: 0
+  }
+
   constructor() {}
 
   ngOnInit(): void {}
