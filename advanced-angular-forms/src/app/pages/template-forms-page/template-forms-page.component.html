@@ -1,0 +1,105 @@
+<form class="form">
+
+  <div class="form-field">
+    <label for="name">First Name</label>
+    <input
+      type="text"
+      id="name"
+      placeholder="Enter your name">
+  </div>
+
+  <div class="form-field">
+    <label for="last-name">Last Name</label>
+    <input
+      type="text"
+      id="last-name"
+      placeholder="Enter your last name">
+  </div>
+
+  <div class="form-field">
+    <label for="nickname">Nickname</label>
+    <input
+      type="text"
+      id="nickname"
+      placeholder="Come up with a nickname">
+  </div>
+
+  <div class="form-field">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      placeholder="Provide your email">
+  </div>
+
+  <div class="form-field-inline-group">
+
+    <div class="form-field form-field--small">
+      <label for="year-of-birth">Year of birth</label>
+        <select id="year-of-birth" name="year-of-birth">
+        <option *ngFor="let year of years" [value]="year">{{year}}</option>
+      </select>
+    </div>
+
+    <div class="form-field form-field--small">
+      <label for="passport">Passport Number</label>
+      <input
+        type="text"
+        id="passport"
+        placeholder="Provide Passport Data">
+    </div>
+  </div>
+
+  <fieldset>
+
+    <legend>Address</legend>
+    <div class="form-field">
+      <label for="full-address">Full Adress</label>
+      <input
+        type="text"
+        id="full-address"
+        placeholder="Street name and house number">
+    </div>
+
+    <div class="form-field">
+      <label for="city">City</label>
+      <input
+        type="text"
+        id="city"
+        placeholder="City">
+    </div>
+
+    <div class="form-field">
+      <label for="post-code">Post Code</label>
+      <input
+        type="number"
+        id="post-code"
+        placeholder="Post code">
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+
+    <legend>User Password</legend>
+    <div class="form-field">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter user's password">
+    </div>
+
+    <div class="form-field">
+      <label for="confirm-password">Confirm password</label>
+      <input
+        type="password"
+        id="confirm-password"
+        placeholder="Confirm the password">
+    </div>
+
+  </fieldset>
+
+  <button >Save</button>
+  <button type="reset" class="reset-button">Reset</button>
+</form>
