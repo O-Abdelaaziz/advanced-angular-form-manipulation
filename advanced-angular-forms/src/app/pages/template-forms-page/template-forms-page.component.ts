@@ -1,7 +1,7 @@
 import { UserInfo } from './../../model/user-info';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-template-forms-page',
@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class TemplateFormsPageComponent implements OnInit {
-
   userInfo: UserInfo = {
     firstName: 'Ouakala',
     lastName: 'Abdelaaziz',
@@ -25,8 +24,8 @@ export class TemplateFormsPageComponent implements OnInit {
     passport: '',
     fullAdress: '',
     city: '',
-    postCode: 0
-  }
+    postCode: 0,
+  };
 
   constructor() {}
 
@@ -37,5 +36,13 @@ export class TemplateFormsPageComponent implements OnInit {
     return Array(now - 1949)
       .fill('')
       .map((_, index) => now - index);
+  }
+
+  onSubmit(ngForm: NgForm, event: SubmitEvent) {
+    console.log('ngForm' + ngForm);
+    console.log('event' + event);
+    console.log('Form submitted!');
+    ngForm.reset();
+    console.log('Form reset!');
   }
 }
