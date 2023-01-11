@@ -7,7 +7,7 @@
     <label for="name">First Name</label>
     <input
       [(ngModel)]="userInfo.firstName"
-      [ngModelOptions]="{ name: 'first-name' }"
+      [ngModelOptions]="{ name: 'first-name', updateOn: 'change' }"
       type="text"
       id="name"
       placeholder="Enter your name"
