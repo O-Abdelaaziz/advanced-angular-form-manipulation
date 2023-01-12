@@ -104,62 +104,62 @@ select {
 {
   border: 2px solid var(--color-success);
 }
-.ng-invalid.ng-dirty:not([ngModelGroup="address"]):not([formGroupName="address"]):not([formArrayName]):not(form) {
-  border: 2px solid var(--color-error);
-}
+// .ng-invalid.ng-dirty:not([ngModelGroup="address"]):not([formGroupName="address"]):not([formArrayName]):not(form) {
+//   border: 2px solid var(--color-error);
+// }
 
 
-button[disabled] {
-  background-color: rgba(0, 0, 0, 0.15);
-  border-color: rgba(0, 0, 0, 0.1);
-  pointer-events: none;
-}
+// button[disabled] {
+//   background-color: rgba(0, 0, 0, 0.15);
+//   border-color: rgba(0, 0, 0, 0.1);
+//   pointer-events: none;
+// }
 
-@keyframes input-message-animation {
-  from {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0px);
-  }
-}
+// @keyframes input-message-animation {
+//   from {
+//     opacity: 0;
+//     transform: translateY(-6px);
+//   }
+//   to {
+//     opacity: 1;
+//     transform: translateY(0px);
+//   }
+// }
 
-@mixin input-message() {
-  font-size: 12px;
-  box-sizing: border-box;
-  padding: 2px 13px;
-  animation-name: input-message-animation;
-  animation-duration: 300ms;
-}
+// @mixin input-message() {
+//   font-size: 12px;
+//   box-sizing: border-box;
+//   padding: 2px 13px;
+//   animation-name: input-message-animation;
+//   animation-duration: 300ms;
+// }
 
-.input-error {
-  @include input-message();
-  color: var(--color-error);
-}
-.input-info {
-  @include input-message();
-  color: var(--color-info)
-}
-.review-textarea {
-  border-radius: var(--border-radius);
-  background-color: white;
-  padding: calc(var(--spacing-step) * 2);
-  margin-top: var(--spacing-step);
-  min-height: 74px;
-  box-sizing: border-box;
-  h4 {
-    margin-bottom: var(--spacing-step);
-    &:empty:before {
-      content: attr(data-placeholder);
-      opacity: 0.6;
-    }
-  }
-  p, div {
-    &:empty:before {
-      content: attr(data-placeholder);
-      opacity: 0.6;
-    }
-  }
-}
+// .input-error {
+//   @include input-message();
+//   color: var(--color-error);
+// }
+// .input-info {
+//   @include input-message();
+//   color: var(--color-info)
+// }
+// .review-textarea {
+//   border-radius: var(--border-radius);
+//   background-color: white;
+//   padding: calc(var(--spacing-step) * 2);
+//   margin-top: var(--spacing-step);
+//   min-height: 74px;
+//   box-sizing: border-box;
+//   h4 {
+//     margin-bottom: var(--spacing-step);
+//     &:empty:before {
+//       content: attr(data-placeholder);
+//       opacity: 0.6;
+//     }
+//   }
+//   p, div {
+//     &:empty:before {
+//       content: attr(data-placeholder);
+//       opacity: 0.6;
+//     }
+//   }
+// }
