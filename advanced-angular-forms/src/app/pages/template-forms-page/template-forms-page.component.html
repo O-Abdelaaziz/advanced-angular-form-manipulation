@@ -1,6 +1,7 @@
 <form
   #form="ngForm"
   (ngSubmit)="onSubmit(form, $event)"
+  ngNativeValidate
   class="form"
   [ngFormOptions]="{ updateOn: 'blur' }"
 >
@@ -147,6 +148,7 @@
     </div>
   </fieldset> -->
 
-  <button [disabled]="form.invalid" type="submit">Save</button>
+  <button>Save</button>
+  <!-- <button [disabled]="form.invalid" type="submit">Save</button> -->
   <button type="reset" class="reset-button">Reset</button>
 </form>
