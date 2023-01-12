@@ -104,16 +104,17 @@ select {
 {
   border: 2px solid var(--color-success);
 }
-// .ng-invalid.ng-dirty:not([ngModelGroup="address"]):not([formGroupName="address"]):not([formArrayName]):not(form) {
-//   border: 2px solid var(--color-error);
-// }
+
+.ng-invalid.ng-dirty:not([ngModelGroup="address"]):not([formGroupName="address"]):not([formArrayName]):not(form) {
+  border: 2px solid var(--color-error);
+}
 
 
-// button[disabled] {
-//   background-color: rgba(0, 0, 0, 0.15);
-//   border-color: rgba(0, 0, 0, 0.1);
-//   pointer-events: none;
-// }
+button[disabled] {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
 
 // @keyframes input-message-animation {
 //   from {

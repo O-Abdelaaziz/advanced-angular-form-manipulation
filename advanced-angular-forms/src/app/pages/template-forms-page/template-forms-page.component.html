@@ -9,12 +9,13 @@
   <p>Form Template Reference Status</p>
   <pre>{{ form.value | json }}</pre>
   <div class="form-field">
-    <label for="name">First Name</label>
+    <label for="first-name">First Name</label>
     <input
-      [(ngModel)]="userInfo.firstName"
-      name="first-name"
       type="text"
-      id="name"
+      [(ngModel)]="userInfo.firstName"
+      required
+      name="first-name"
+      id="first-name"
       placeholder="Enter your name"
     />
   </div>
@@ -22,9 +23,10 @@
   <div class="form-field">
     <label for="last-name">Last Name</label>
     <input
+      type="text"
       name="last-name"
       [(ngModel)]="userInfo.lastName"
-      type="text"
+      required
       id="last-name"
       placeholder="Enter your last name"
     />
@@ -33,9 +35,10 @@
   <div class="form-field">
     <label for="nickname">Nickname</label>
     <input
+      type="text"
       name="nickname"
       [(ngModel)]="userInfo.nickname"
-      type="text"
+      required
       id="nickname"
       placeholder="Come up with a nickname"
     />
@@ -44,9 +47,10 @@
   <div class="form-field">
     <label for="email">Email</label>
     <input
+      type="email"
       name="email"
       [(ngModel)]="userInfo.email"
-      type="email"
+      required
       id="email"
       placeholder="Provide your email"
     />
@@ -67,9 +71,10 @@
     <div class="form-field form-field--small">
       <label for="passport">Passport Number</label>
       <input
+        type="text"
         name="passport"
         [(ngModel)]="userInfo.passport"
-        type="text"
+        required
         id="passport"
         placeholder="Provide Passport Data"
       />
@@ -81,9 +86,10 @@
     <div class="form-field">
       <label for="full-address">Full Adress</label>
       <input
+        type="text"
         name="full-address"
         [(ngModel)]="userInfo.fullAdress"
-        type="text"
+        required
         id="full-address"
         placeholder="Street name and house number"
       />
@@ -92,9 +98,10 @@
     <div class="form-field">
       <label for="city">City</label>
       <input
+        type="text"
         name="city"
         [(ngModel)]="userInfo.city"
-        type="text"
+        required
         id="city"
         placeholder="City"
       />
@@ -103,9 +110,10 @@
     <div class="form-field">
       <label for="post-code">Post Code</label>
       <input
+        type="number"
         name="post-code"
         [(ngModel)]="userInfo.passport"
-        type="number"
+        required
         id="post-code"
         placeholder="Post code"
       />
@@ -133,6 +141,6 @@
     </div>
   </fieldset> -->
 
-  <button type="submit">Save</button>
+  <button [disabled]="form.invalid" type="submit">Save</button>
   <button type="reset" class="reset-button">Reset</button>
 </form>
