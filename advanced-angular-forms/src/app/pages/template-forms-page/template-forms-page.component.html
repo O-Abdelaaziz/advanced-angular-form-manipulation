@@ -1,7 +1,6 @@
 <form
   #form="ngForm"
   (ngSubmit)="onSubmit(form, $event)"
-  ngNativeValidate
   class="form"
   [ngFormOptions]="{ updateOn: 'blur' }"
 >
@@ -14,12 +13,15 @@
     <input
       type="text"
       [(ngModel)]="userInfo.firstName"
+      #firstName="ngModel"
       required
       minlength="2"
       name="first-name"
       id="first-name"
       placeholder="Enter your name"
     />
+    <div *ngIf="firstName.dirty && firstName.hasError('required')" class="input-error">This field is required!</div>
+    <div *ngIf="firstName.dirty && firstName.hasError('minlength')" class="input-error">This field is too short!</div>
   </div>
 
   <div class="form-field">
@@ -28,11 +30,14 @@
       type="text"
       name="last-name"
       [(ngModel)]="userInfo.lastName"
+      #lastName="ngModel"
       minlength="2"
       required
       id="last-name"
       placeholder="Enter your last name"
     />
+    <div *ngIf="lastName.dirty && lastName.hasError('required')" class="input-error">This field is required!</div>
+    <div *ngIf="lastName.dirty && lastName.hasError('minlength')" class="input-error">This field is too short!</div>
   </div>
 
   <div class="form-field">
@@ -41,11 +46,16 @@
       type="text"
       name="nickname"
       [(ngModel)]="userInfo.nickname"
+      #nickname="ngModel"
       pattern="^[\w.]+$"
       required
+      minlength="3"
       id="nickname"
       placeholder="Come up with a nickname"
     />
+    <div *ngIf="nickname.dirty && nickname.hasError('required')" class="input-error">This field is required!</div>
+    <div *ngIf="nickname.dirty && nickname.hasError('minlength')" class="input-error">This field is too short!</div>
+    <div *ngIf="nickname.dirty && nickname.hasError('pattern')" class="input-error">Only letters, numbers, _ and . is allowed!</div>
   </div>
 
   <div class="form-field">
@@ -54,11 +64,14 @@
       type="email"
       name="email"
       [(ngModel)]="userInfo.email"
+      #email="ngModel"
       required
       email
       id="email"
       placeholder="Provide your email"
     />
+    <div *ngIf="nickname.dirty && nickname.hasError('required')" class="input-error">This field is required!</div>
+    <div *ngIf="nickname.dirty && nickname.hasError('email')" class="input-error">This field should be a valid email!</div>
   </div>
 
   <div class="form-field-inline-group">
@@ -67,11 +80,13 @@
       <select
         id="year-of-birth"
         [(ngModel)]="userInfo.yearOfBirth"
+        #yearOfBirth="ngModel"
         required
         name="year-of-birth"
       >
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
+      <div *ngIf="yearOfBirth.dirty && yearOfBirth.hasError('required')" class="input-error">This field is required</div>
     </div>
 
     <div class="form-field form-field--small">
@@ -80,11 +95,14 @@
         type="text"
         name="passport"
         [(ngModel)]="userInfo.passport"
-        required
+        #passport="ngModel"
         pattern="^[A-Z]{2}[0-9]{6}$"
+        required
         id="passport"
         placeholder="Provide Passport Data"
       />
+      <div *ngIf="passport.dirty && passport.hasError('pattern')" class="input-error">Invalid passport number</div>
+      <div *ngIf="passport.dirty && passport.hasError('required')" class="input-error">Required for adults</div>
     </div>
   </div>
 
@@ -96,10 +114,12 @@
         type="text"
         name="full-address"
         [(ngModel)]="userInfo.fullAdress"
+        #fullAdress="ngModel"
         required
         id="full-address"
         placeholder="Street name and house number"
       />
+      <div *ngIf="fullAdress.dirty && fullAdress.hasError('required')" class="input-error">This field is required</div>
     </div>
 
     <div class="form-field">
@@ -108,10 +128,12 @@
         type="text"
         name="city"
         [(ngModel)]="userInfo.city"
+        #city="ngModel"
         required
         id="city"
         placeholder="City"
       />
+      <div *ngIf="city.dirty && city.hasError('required')" class="input-error">This field is required</div>
     </div>
 
     <div class="form-field">
@@ -119,11 +141,14 @@
       <input
         type="number"
         name="post-code"
-        [(ngModel)]="userInfo.passport"
+        [(ngModel)]="userInfo.postCode"
+        #postCode="ngModel"
         required
         id="post-code"
         placeholder="Post code"
       />
+      <div *ngIf="postCode.dirty && postCode.hasError('required')" class="input-error">This field is required</div>
+
     </div>
   </fieldset>
 
@@ -148,7 +173,6 @@
     </div>
   </fieldset> -->
 
-  <button>Save</button>
-  <!-- <button [disabled]="form.invalid" type="submit">Save</button> -->
+  <button [disabled]="form.invalid" type="submit">Save</button>
   <button type="reset" class="reset-button">Reset</button>
 </form>
