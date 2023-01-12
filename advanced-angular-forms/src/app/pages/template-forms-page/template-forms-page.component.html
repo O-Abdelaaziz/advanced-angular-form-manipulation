@@ -21,7 +21,9 @@
       placeholder="Enter your name"
     />
     <div *ngIf="firstName.dirty && firstName.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="firstName.dirty && firstName.hasError('minlength')" class="input-error">This field is too short!</div>
+    <div *ngIf="firstName.dirty && firstName.hasError('minlength')" class="input-error">
+      The length should be at least <strong>{{firstName.getError('minlength').requiredLength}}</strong> characters
+    </div>
   </div>
 
   <div class="form-field">
@@ -37,7 +39,9 @@
       placeholder="Enter your last name"
     />
     <div *ngIf="lastName.dirty && lastName.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="lastName.dirty && lastName.hasError('minlength')" class="input-error">This field is too short!</div>
+    <div *ngIf="lastName.dirty && lastName.hasError('minlength')" class="input-error">
+      The length should be at least <strong>{{lastName.getError('minlength').requiredLength}}</strong> characters
+    </div>
   </div>
 
   <div class="form-field">
@@ -54,7 +58,9 @@
       placeholder="Come up with a nickname"
     />
     <div *ngIf="nickname.dirty && nickname.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="nickname.dirty && nickname.hasError('minlength')" class="input-error">This field is too short!</div>
+    <div *ngIf="nickname.dirty && nickname.hasError('minlength')" class="input-error">
+      The length should be at least <strong>{{nickname.getError('minlength').requiredLength}}</strong> characters
+    </div>
     <div *ngIf="nickname.dirty && nickname.hasError('pattern')" class="input-error">Only letters, numbers, _ and . is allowed!</div>
   </div>
 
