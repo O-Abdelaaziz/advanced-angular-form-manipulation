@@ -1,3 +1,4 @@
+import { BannedWordsDirective } from './../../directives/validators/banned-words.directive';
 import { UserInfo } from './../../model/user-info';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -6,7 +7,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-template-forms-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BannedWordsDirective],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [
     './template-forms-page.component.scss',
@@ -15,10 +16,12 @@ import { FormsModule, NgForm } from '@angular/forms';
   ],
 })
 export class TemplateFormsPageComponent implements OnInit {
+  public bannedWords = ['admin', 'administrator', 'super_admin', 'moderator'];
   userInfo: UserInfo = {
     firstName: 'Ouakala',
     lastName: 'Abdelaaziz',
     nickname: '',
+    username: '',
     email: '',
     yearOfBirth: 0,
     passport: '',

@@ -20,9 +20,19 @@
       id="first-name"
       placeholder="Enter your name"
     />
-    <div *ngIf="firstName.dirty && firstName.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="firstName.dirty && firstName.hasError('minlength')" class="input-error">
-      The length should be at least <strong>{{firstName.getError('minlength').requiredLength}}</strong> characters
+    <div
+      *ngIf="firstName.dirty && firstName.hasError('required')"
+      class="input-error"
+    >
+      This field is required!
+    </div>
+    <div
+      *ngIf="firstName.dirty && firstName.hasError('minlength')"
+      class="input-error"
+    >
+      The length should be at least
+      <strong>{{ firstName.getError("minlength").requiredLength }}</strong>
+      characters
     </div>
   </div>
 
@@ -38,9 +48,19 @@
       id="last-name"
       placeholder="Enter your last name"
     />
-    <div *ngIf="lastName.dirty && lastName.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="lastName.dirty && lastName.hasError('minlength')" class="input-error">
-      The length should be at least <strong>{{lastName.getError('minlength').requiredLength}}</strong> characters
+    <div
+      *ngIf="lastName.dirty && lastName.hasError('required')"
+      class="input-error"
+    >
+      This field is required!
+    </div>
+    <div
+      *ngIf="lastName.dirty && lastName.hasError('minlength')"
+      class="input-error"
+    >
+      The length should be at least
+      <strong>{{ lastName.getError("minlength").requiredLength }}</strong>
+      characters
     </div>
   </div>
 
@@ -57,11 +77,69 @@
       id="nickname"
       placeholder="Come up with a nickname"
     />
-    <div *ngIf="nickname.dirty && nickname.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="nickname.dirty && nickname.hasError('minlength')" class="input-error">
-      The length should be at least <strong>{{nickname.getError('minlength').requiredLength}}</strong> characters
+    <div
+      *ngIf="nickname.dirty && nickname.hasError('required')"
+      class="input-error"
+    >
+      This field is required!
     </div>
-    <div *ngIf="nickname.dirty && nickname.hasError('pattern')" class="input-error">Only letters, numbers, _ and . is allowed!</div>
+    <div
+      *ngIf="nickname.dirty && nickname.hasError('minlength')"
+      class="input-error"
+    >
+      The length should be at least
+      <strong>{{ nickname.getError("minlength").requiredLength }}</strong>
+      characters
+    </div>
+    <div
+      *ngIf="nickname.dirty && nickname.hasError('pattern')"
+      class="input-error"
+    >
+      Only letters, numbers, _ and . is allowed!
+    </div>
+  </div>
+
+  <div class="form-field">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      name="username"
+      [(ngModel)]="userInfo.username"
+      [appBannedWords]="bannedWords"
+      #username="ngModel"
+      pattern="^[\w.]+$"
+      required
+      minlength="3"
+      id="username"
+      placeholder="Come up with a username"
+    />
+    <div
+      *ngIf="username.dirty && username.hasError('required')"
+      class="input-error"
+    >
+      This field is required!
+    </div>
+    <div
+      *ngIf="username.dirty && username.hasError('minlength')"
+      class="input-error"
+    >
+      The length should be at least
+      <strong>{{ username.getError("minlength").requiredLength }}</strong>
+      characters
+    </div>
+    <div
+      *ngIf="username.dirty && username.hasError('pattern')"
+      class="input-error"
+    >
+      Only letters, numbers, _ and . is allowed!
+    </div>
+    <div
+      *ngIf="username.dirty && username.hasError('appBannedWords')"
+      class="input-error"
+    >
+      The value <strong>{{ username.getError("appBannedWords").bannedWord }}</strong> is
+      not allowed!
+    </div>
   </div>
 
   <div class="form-field">
@@ -76,8 +154,18 @@
       id="email"
       placeholder="Provide your email"
     />
-    <div *ngIf="nickname.dirty && nickname.hasError('required')" class="input-error">This field is required!</div>
-    <div *ngIf="nickname.dirty && nickname.hasError('email')" class="input-error">This field should be a valid email!</div>
+    <div
+      *ngIf="nickname.dirty && nickname.hasError('required')"
+      class="input-error"
+    >
+      This field is required!
+    </div>
+    <div
+      *ngIf="nickname.dirty && nickname.hasError('email')"
+      class="input-error"
+    >
+      This field should be a valid email!
+    </div>
   </div>
 
   <div class="form-field-inline-group">
@@ -92,7 +180,12 @@
       >
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
-      <div *ngIf="yearOfBirth.dirty && yearOfBirth.hasError('required')" class="input-error">This field is required</div>
+      <div
+        *ngIf="yearOfBirth.dirty && yearOfBirth.hasError('required')"
+        class="input-error"
+      >
+        This field is required
+      </div>
     </div>
 
     <div class="form-field form-field--small">
@@ -107,8 +200,18 @@
         id="passport"
         placeholder="Provide Passport Data"
       />
-      <div *ngIf="passport.dirty && passport.hasError('pattern')" class="input-error">Invalid passport number</div>
-      <div *ngIf="passport.dirty && passport.hasError('required')" class="input-error">Required for adults</div>
+      <div
+        *ngIf="passport.dirty && passport.hasError('pattern')"
+        class="input-error"
+      >
+        Invalid passport number
+      </div>
+      <div
+        *ngIf="passport.dirty && passport.hasError('required')"
+        class="input-error"
+      >
+        Required for adults
+      </div>
     </div>
   </div>
 
@@ -125,7 +228,12 @@
         id="full-address"
         placeholder="Street name and house number"
       />
-      <div *ngIf="fullAdress.dirty && fullAdress.hasError('required')" class="input-error">This field is required</div>
+      <div
+        *ngIf="fullAdress.dirty && fullAdress.hasError('required')"
+        class="input-error"
+      >
+        This field is required
+      </div>
     </div>
 
     <div class="form-field">
@@ -139,7 +247,9 @@
         id="city"
         placeholder="City"
       />
-      <div *ngIf="city.dirty && city.hasError('required')" class="input-error">This field is required</div>
+      <div *ngIf="city.dirty && city.hasError('required')" class="input-error">
+        This field is required
+      </div>
     </div>
 
     <div class="form-field">
@@ -153,8 +263,12 @@
         id="post-code"
         placeholder="Post code"
       />
-      <div *ngIf="postCode.dirty && postCode.hasError('required')" class="input-error">This field is required</div>
-
+      <div
+        *ngIf="postCode.dirty && postCode.hasError('required')"
+        class="input-error"
+      >
+        This field is required
+      </div>
     </div>
   </fieldset>
 
