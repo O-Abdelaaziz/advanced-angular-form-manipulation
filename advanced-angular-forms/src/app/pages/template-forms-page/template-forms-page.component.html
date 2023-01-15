@@ -197,7 +197,7 @@
         [(ngModel)]="userInfo.passport"
         #passport="ngModel"
         pattern="^[A-Z]{2}[0-9]{6}$"
-        required
+        [required]="isAdult"
         id="passport"
         placeholder="Provide Passport Data"
       />

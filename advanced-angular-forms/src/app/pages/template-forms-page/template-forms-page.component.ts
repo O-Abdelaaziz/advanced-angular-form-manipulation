@@ -29,7 +29,7 @@ export class TemplateFormsPageComponent implements OnInit {
     nickname: '',
     username: 'a.ouakala',
     email: '',
-    yearOfBirth: 0,
+    yearOfBirth: 2023,
     passport: '',
     fullAdress: '',
     city: '',
@@ -47,6 +47,11 @@ export class TemplateFormsPageComponent implements OnInit {
     return Array(now - 1949)
       .fill('')
       .map((_, index) => now - index);
+  }
+
+  get isAdult() {
+    const currentYear = new Date().getFullYear();
+    return currentYear - this.userInfo.yearOfBirth >=18
   }
 
   onSubmit(ngForm: NgForm, event: SubmitEvent) {
