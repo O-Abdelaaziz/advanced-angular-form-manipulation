@@ -15,6 +15,7 @@ import {
 })
 export class BannedWordsDirective implements Validator {
   private bannedWords: string[] = [];
+  private onChange: () => void = () => {};
   constructor() {}
 
   validate(control: AbstractControl<string>): ValidationErrors | null {
@@ -29,5 +30,10 @@ export class BannedWordsDirective implements Validator {
   @Input()
   set appBannedWords(value: string | string[]) {
     this.bannedWords = Array.isArray(value) ? value : [value];
+    this.onChange();
+  }
+
+  registerOnValidatorChange?(fn: () => void): void {
+    this.onChange = fn;
   }
 }

@@ -1,9 +1,5 @@
 <!-- [ngFormOptions]="{ updateOn: 'blur' }" -->
-<form
-  #form="ngForm"
-  (ngSubmit)="onSubmit(form, $event)"
-  class="form"
->
+<form #form="ngForm" (ngSubmit)="onSubmit(form, $event)" class="form">
   <p>Form Model Status</p>
   <pre>{{ userInfo | json }}</pre>
   <p>Form Template Reference Status</p>
@@ -105,7 +101,7 @@
       type="text"
       name="username"
       [(ngModel)]="userInfo.username"
-      [appBannedWords]="bannedWords"
+      [appBannedWords]="isAdult ? bannedWords : []"
       #username="ngModel"
       pattern="^[\w.]+$"
       required
@@ -273,10 +269,7 @@
     </div>
   </fieldset>
 
-  <fieldset
-    ngModelGroup="password"
-    appPasswordShouldMatch
-  >
+  <fieldset ngModelGroup="password" appPasswordShouldMatch>
     <legend>User Password</legend>
     <div class="form-field">
       <label for="password">Password</label>
