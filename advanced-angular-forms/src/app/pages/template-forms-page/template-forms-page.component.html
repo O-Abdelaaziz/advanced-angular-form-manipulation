@@ -1,8 +1,8 @@
+<!-- [ngFormOptions]="{ updateOn: 'blur' }" -->
 <form
   #form="ngForm"
   (ngSubmit)="onSubmit(form, $event)"
   class="form"
-  [ngFormOptions]="{ updateOn: 'blur' }"
 >
   <p>Form Model Status</p>
   <pre>{{ userInfo | json }}</pre>
@@ -137,7 +137,8 @@
       *ngIf="username.dirty && username.hasError('appBannedWords')"
       class="input-error"
     >
-      The value <strong>{{ username.getError("appBannedWords").bannedWord }}</strong> is
+      The value
+      <strong>{{ username.getError("appBannedWords").bannedWord }}</strong> is
       not allowed!
     </div>
   </div>
@@ -272,26 +273,77 @@
     </div>
   </fieldset>
 
-  <!-- <fieldset>
+  <fieldset
+    ngModelGroup="password"
+    appPasswordShouldMatch
+  >
     <legend>User Password</legend>
     <div class="form-field">
       <label for="password">Password</label>
       <input
         type="password"
+        name="password"
+        [(ngModel)]="userInfo.password"
+        #password="ngModel"
+        required
+        minlength="6"
         id="password"
         placeholder="Enter user's password"
       />
+      <div
+        *ngIf="password.dirty && password.hasError('required')"
+        class="input-error"
+      >
+        This field is required
+      </div>
+      <div
+        *ngIf="password.dirty && password.hasError('minlength')"
+        class="input-error"
+      >
+        The length should be at least
+        <strong>{{ password.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
     </div>
 
     <div class="form-field">
       <label for="confirm-password">Confirm password</label>
       <input
         type="password"
+        name="cofirm-password"
+        [(ngModel)]="userInfo.cofirmPassword"
+        #cofirmPassword="ngModel"
+        required
         id="confirm-password"
         placeholder="Confirm the password"
       />
+      <div
+        *ngIf="cofirmPassword.dirty && cofirmPassword.hasError('required')"
+        class="input-error"
+      >
+        This field is required
+      </div>
+      <div
+        *ngIf="
+          cofirmPassword.dirty &&
+          cofirmPassword.hasError('appPasswordShouldMatch')
+        "
+        class="input-error"
+      >
+        Password dosn't match
+      </div>
+      <div
+        *ngIf="cofirmPassword.dirty && cofirmPassword.hasError('minlength')"
+        class="input-error"
+      >
+        The length should be at least
+        <strong>{{
+          cofirmPassword.getError("minlength").requiredLength
+        }}</strong>
+        characters
+      </div>
     </div>
-  </fieldset> -->
+  </fieldset>
 
   <button [disabled]="form.invalid" type="submit">Save</button>
   <button type="reset" class="reset-button">Reset</button>

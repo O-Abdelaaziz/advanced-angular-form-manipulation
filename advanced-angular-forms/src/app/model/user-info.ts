@@ -9,4 +9,6 @@ export interface UserInfo {
   fullAdress: string;
   city: string;
   postCode: number;
+  password: number;
+  cofirmPassword: number;
 }

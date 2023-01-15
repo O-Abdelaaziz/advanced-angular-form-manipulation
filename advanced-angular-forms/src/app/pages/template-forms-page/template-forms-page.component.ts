@@ -1,4 +1,5 @@
 import { BannedWordsDirective } from './../../directives/validators/banned-words.directive';
+import { PasswordShouldMatchDirective } from './../../directives/validators/password-should-match.directive';
 import { UserInfo } from './../../model/user-info';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,7 +8,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 @Component({
   selector: 'app-template-forms-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, BannedWordsDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BannedWordsDirective,
+    PasswordShouldMatchDirective,
+  ],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [
     './template-forms-page.component.scss',
@@ -21,13 +27,15 @@ export class TemplateFormsPageComponent implements OnInit {
     firstName: 'Ouakala',
     lastName: 'Abdelaaziz',
     nickname: '',
-    username: '',
+    username: 'a.ouakala',
     email: '',
     yearOfBirth: 0,
     passport: '',
     fullAdress: '',
     city: '',
     postCode: 0,
+    password: 123456,
+    cofirmPassword: 0,
   };
 
   constructor() {}
