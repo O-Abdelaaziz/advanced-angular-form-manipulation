@@ -1,7 +1,8 @@
+import { UniqueUsernameDirective } from './../../directives/validators/unique-username.directive';
 import { BannedWordsDirective } from './../../directives/validators/banned-words.directive';
 import { PasswordShouldMatchDirective } from './../../directives/validators/password-should-match.directive';
 import { UserInfo } from './../../model/user-info';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 
@@ -13,6 +14,7 @@ import { FormsModule, NgForm } from '@angular/forms';
     FormsModule,
     BannedWordsDirective,
     PasswordShouldMatchDirective,
+    UniqueUsernameDirective,
   ],
   templateUrl: './template-forms-page.component.html',
   styleUrls: [
@@ -20,6 +22,7 @@ import { FormsModule, NgForm } from '@angular/forms';
     '../../style/common-form.scss',
     '../../style/common-page.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateFormsPageComponent implements OnInit {
   public bannedWords = ['admin', 'administrator', 'super_admin', 'moderator'];
@@ -51,7 +54,7 @@ export class TemplateFormsPageComponent implements OnInit {
 
   get isAdult() {
     const currentYear = new Date().getFullYear();
-    return currentYear - this.userInfo.yearOfBirth >=18
+    return currentYear - this.userInfo.yearOfBirth >= 18;
   }
 
   onSubmit(ngForm: NgForm, event: SubmitEvent) {

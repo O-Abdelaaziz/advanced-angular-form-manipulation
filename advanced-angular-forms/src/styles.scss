@@ -132,10 +132,12 @@ select {
   @include input-message();
   color: var(--color-error);
 }
-// .input-info {
-//   @include input-message();
-//   color: var(--color-info)
-// }
+
+.input-info {
+  @include input-message();
+  color: var(--color-info)
+}
+
 // .review-textarea {
 //   border-radius: var(--border-radius);
 //   background-color: white;
