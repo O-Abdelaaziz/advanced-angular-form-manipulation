@@ -1,5 +1,10 @@
 <!-- [ngFormOptions]="{ updateOn: 'blur' }" -->
-<form #form="ngForm" (ngSubmit)="onSubmit(form, $event)" class="form">
+<form
+  #form="ngForm"
+  (reset)="onReset(form, $event)"
+  (ngSubmit)="onSubmit(form, $event)"
+  class="form"
+>
   <p>Form Model Status</p>
   <pre>{{ userInfo | json }}</pre>
   <p>Form Template Reference Status</p>
