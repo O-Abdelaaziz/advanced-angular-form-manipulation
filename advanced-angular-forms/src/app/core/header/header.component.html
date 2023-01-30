@@ -1,12 +1,39 @@
 <header class="header">
-  <img class="logo" src="https://angular.io/assets/images/logos/angular/shield-large.svg" height="60" alt="Decoded Frontend">
+  <img
+    class="logo"
+    src="https://angular.io/assets/images/logos/angular/shield-large.svg"
+    height="60"
+    alt="Decoded Frontend"
+  />
   <div class="nav">
-    <a class="nav-link" routerLinkActive="active" routerLink="/" [routerLinkActiveOptions]="{ exact:true }">Template-Driven Forms</a>
-    <a class="nav-link" routerLinkActive="active" routerLink="/reactive-forms">Reactive Forms</a>
-    <a class="nav-link" routerLinkActive="active" routerLink="/custom-rating-picker">Custom Rating Picker</a>
-    <a class="nav-link" routerLinkActive="active" routerLink="/custom-select">Custom Select</a>
-    <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-forms">Dynamic Forms</a>
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Template-Driven Forms</a
+    >
+    <a class="nav-link" routerLinkActive="active" routerLink="/reactive-forms"
+      >Reactive Forms</a
+    >
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      routerLink="/custom-rating-picker"
+      >Custom Rating Picker</a
+    >
+    <a class="nav-link" routerLinkActive="active" routerLink="/custom-select"
+      >Custom Select</a
+    >
+    <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-forms"
+      >Dynamic Forms</a
+    >
   </div>
-  <!-- <input [(ngModel)]="searchString" (ngModelChange)="findSomething($event)" class="global-search" placeholder="Global Search" type="text"> -->
-  <input class="global-search" [(ngModel)]="searchString" placeholder="Global Search" type="text">
+  <input [(ngModel)]="searchString" (ngModelChange)="findSomething($event)" class="global-search" placeholder="Global Search" type="text">
+  <!-- <input
+    class="global-search"
+    [formControl]="reactiveSearchString"
+    placeholder="Global Search"
+    type="text"
+  /> -->
 </header>
