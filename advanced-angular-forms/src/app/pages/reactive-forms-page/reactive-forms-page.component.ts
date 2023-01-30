@@ -6,8 +6,15 @@ import {
   FormArray,
   FormControl,
   FormGroup,
+  FormRecord,
   ReactiveFormsModule,
 } from '@angular/forms';
+
+// interface Address {
+//   fullAddress: FormControl<string>;
+//   city?: FormControl<string>;
+//   postCode?: FormControl<string>;
+// }
 
 @Component({
   selector: 'app-reactive-forms-page',
@@ -36,9 +43,9 @@ export class ReactiveFormsPageComponent implements OnInit {
     yearOfBirth: new FormControl(''),
     passport: new FormControl(''),
     address: new FormGroup({
-      fullAddress: new FormControl(''),
-      city: new FormControl(''),
-      postCode: new FormControl(''),
+      fullAddress: new FormControl('', { nonNullable: true }),
+      city: new FormControl('', { nonNullable: true }),
+      postCode: new FormControl('', { nonNullable: true }),
     }),
     phones: new FormArray([
       new FormGroup({
@@ -46,7 +53,8 @@ export class ReactiveFormsPageComponent implements OnInit {
         phone: new FormControl(''),
       }),
     ]),
-    skills: new FormGroup<{ [key: string]: FormControl<boolean> }>({}),
+    //FormRecord extends FormGroup{<[key: string]: TControl}>{}
+    skills: new FormRecord<FormControl<boolean>>({}),
   });
 
   constructor(private _userSkills: UserSkillsService) {}
@@ -55,6 +63,7 @@ export class ReactiveFormsPageComponent implements OnInit {
     this.skills$ = this._userSkills
       .getSkills()
       .pipe(tap((skills) => this.buildSkillControls(skills)));
+    // this.userForm.controls.address.addControl('city', new FormControl());
   }
 
   get years() {
