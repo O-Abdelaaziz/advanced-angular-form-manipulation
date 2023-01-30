@@ -37,17 +37,25 @@ export class ReactiveFormsPageComponent implements OnInit {
   public userForm = this._formBuilder.group({
     firstName: ['Ouakala', [Validators.required, Validators.minLength(2)]],
     lastName: ['Abdelaaziz', Validators.required],
-    username: ['a.ouakala', Validators.required],
-    nickname: '',
-    email: '',
+    nickname: [
+      'a.ouakala',
+      Validators.required,
+      Validators.minLength(2),
+      Validators.pattern(/^[\w.]+$/),
+    ],
+    username: ['', [Validators.required, Validators.minLength(2)]],
+    email: [
+      '',
+      [Validators.required, Validators.email, Validators.minLength(2)],
+    ],
     yearOfBirth: this._formBuilder.nonNullable.control(
       this.years[this.years.length - 1]
     ),
-    passport: '',
+    passport: ['', [Validators.pattern(/^[A-Z]{2}[0-9]{6}$/)]],
     address: this._formBuilder.group({
-      fullAddress: this._formBuilder.nonNullable.control(''),
-      city: this._formBuilder.nonNullable.control(''),
-      postCode: this._formBuilder.nonNullable.control(0),
+      fullAddress: ['', Validators.required],
+      city: ['', Validators.required],
+      postCode: ['', Validators.required],
     }),
     phones: this._formBuilder.array([
       this._formBuilder.group({
