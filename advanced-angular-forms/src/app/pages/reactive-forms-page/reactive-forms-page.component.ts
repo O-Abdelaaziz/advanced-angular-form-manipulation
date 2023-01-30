@@ -9,6 +9,7 @@ import {
   FormGroup,
   FormRecord,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 
 // interface Address {
@@ -34,9 +35,9 @@ export class ReactiveFormsPageComponent implements OnInit {
   public skills$!: Observable<string[]>;
 
   public userForm = this._formBuilder.group({
-    firstName: 'Ouakala',
-    lastName: 'Abdelaaziz',
-    username: 'a.ouakala',
+    firstName: ['Ouakala', [Validators.required, Validators.minLength(2)]],
+    lastName: ['Abdelaaziz', Validators.required],
+    username: ['a.ouakala', Validators.required],
     nickname: '',
     email: '',
     yearOfBirth: this._formBuilder.nonNullable.control(

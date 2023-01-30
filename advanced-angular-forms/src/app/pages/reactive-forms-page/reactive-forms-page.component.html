@@ -138,7 +138,7 @@
     </ng-container>
   </fieldset>
 
-  <button>Save</button>
+  <button [disabled]="userForm.invalid">Save</button>
   <button class="reset-button" type="reset">Reset</button>
 </form>
 
