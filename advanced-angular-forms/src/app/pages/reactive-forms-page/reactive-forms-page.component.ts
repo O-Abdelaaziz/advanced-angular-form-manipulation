@@ -68,4 +68,8 @@ export class ReactiveFormsPageComponent implements OnInit {
     console.log('remove phone button clicked!!!');
     this.userForm.controls.phones.removeAt(index);
   }
+
+  public onSubmit(event: Event) {
+    console.log('Form submitted: ' + this.userForm.value);
+  }
 }
