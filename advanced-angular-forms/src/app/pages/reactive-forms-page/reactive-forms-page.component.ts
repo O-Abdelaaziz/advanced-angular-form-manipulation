@@ -22,7 +22,8 @@ import {
 export class ReactiveFormsPageComponent implements OnInit {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public userForm = new FormGroup({
-    firstName: new FormControl('Ouakala'),
+    //(property) firstName: FormControl<string | null> because if we went to rest the control is become null
+    firstName: new FormControl<string>('Ouakala'),
     lastName: new FormControl('Abdelaaziz'),
     username: new FormControl('a.ouakala'),
     nickname: new FormControl(''),
