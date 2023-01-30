@@ -20,6 +20,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReactiveFormsPageComponent implements OnInit {
+  public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public userForm = new FormGroup({
     firstName: new FormControl('Ouakala'),
     lastName: new FormControl('Abdelaaziz'),
@@ -33,7 +34,12 @@ export class ReactiveFormsPageComponent implements OnInit {
       city: new FormControl(''),
       postCode: new FormControl(''),
     }),
-    phones: new FormArray([new FormControl('')]),
+    phones: new FormArray([
+      new FormGroup({
+        label: new FormControl(this.phoneLabels[0]),
+        phone: new FormControl(''),
+      }),
+    ]),
   });
 
   constructor() {}
@@ -49,7 +55,13 @@ export class ReactiveFormsPageComponent implements OnInit {
 
   public onAddPhone() {
     console.log('add phone button clicked!!!');
-    this.userForm.controls.phones.insert(0, new FormControl(''));
+    this.userForm.controls.phones.insert(
+      0,
+      new FormGroup({
+        label: new FormControl(this.phoneLabels[0]),
+        phone: new FormControl(''),
+      })
+    );
   }
 
   public onRemovePhone(index: number) {
