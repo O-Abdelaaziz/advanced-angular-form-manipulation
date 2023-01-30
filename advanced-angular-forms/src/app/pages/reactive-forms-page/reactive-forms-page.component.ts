@@ -3,6 +3,7 @@ import { Observable, tap } from 'rxjs';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+  FormBuilder,
   FormArray,
   FormControl,
   FormGroup,
@@ -32,32 +33,35 @@ export class ReactiveFormsPageComponent implements OnInit {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public skills$!: Observable<string[]>;
 
-  public userForm = new FormGroup({
-    //(property) firstName: FormControl<string | null> because if we want to rest the control is become null
-    firstName: new FormControl<string>('Ouakala'),
-    lastName: new FormControl<string>('Abdelaaziz'),
-    //in this scenario username can't be null and a.ouakala is the default value when reset the form.
-    username: new FormControl<string>('a.ouakala', { nonNullable: true }),
-    nickname: new FormControl(''),
-    email: new FormControl(''),
-    yearOfBirth: new FormControl(''),
-    passport: new FormControl(''),
-    address: new FormGroup({
-      fullAddress: new FormControl('', { nonNullable: true }),
-      city: new FormControl('', { nonNullable: true }),
-      postCode: new FormControl('', { nonNullable: true }),
+  public userForm = this._formBuilder.group({
+    firstName: 'Ouakala',
+    lastName: 'Abdelaaziz',
+    username: 'a.ouakala',
+    nickname: '',
+    email: '',
+    yearOfBirth: this._formBuilder.nonNullable.control(
+      this.years[this.years.length - 1]
+    ),
+    passport: '',
+    address: this._formBuilder.group({
+      fullAddress: this._formBuilder.nonNullable.control(''),
+      city: this._formBuilder.nonNullable.control(''),
+      postCode: this._formBuilder.nonNullable.control(0),
     }),
-    phones: new FormArray([
-      new FormGroup({
-        label: new FormControl(this.phoneLabels[0], { nonNullable: true }),
-        phone: new FormControl(''),
+    phones: this._formBuilder.array([
+      this._formBuilder.group({
+        label: this._formBuilder.nonNullable.control(this.phoneLabels[0]),
+        phone: '',
       }),
     ]),
     //FormRecord extends FormGroup{<[key: string]: TControl}>{}
-    skills: new FormRecord<FormControl<boolean>>({}),
+    skills: this._formBuilder.record<FormControl<boolean>>({}),
   });
 
-  constructor(private _userSkills: UserSkillsService) {}
+  constructor(
+    private _userSkills: UserSkillsService,
+    private _formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.skills$ = this._userSkills
