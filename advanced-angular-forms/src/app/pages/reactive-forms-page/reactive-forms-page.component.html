@@ -103,18 +103,45 @@
     <div class="control-buttons">
       <button (click)="onAddPhone()" class="add-button" type="button">+</button>
     </div>
-    <div class="form-field" *ngFor="let phone of userForm.controls.phones.controls; index as i" [formGroupName]="i">
-      <label for="phone-{{i}}">Phone number</label>
+    <div
+      class="form-field"
+      *ngFor="let phone of userForm.controls.phones.controls; index as i"
+      [formGroupName]="i"
+    >
+      <label for="phone-{{ i }}">Phone number</label>
       <div class="control-container">
         <select class="phone-label-dropdown" formControlName="label">
-          <option *ngFor="let label of phoneLabels" [value]="label">{{label}}</option>
+          <option *ngFor="let label of phoneLabels" [value]="label">
+            {{ label }}
+          </option>
         </select>
-        <input formControlName="phone" type="text" placeholder="Enter Phone Number" id="phone-{{i}}">
-        <button class="remove-button" (click)="onRemovePhone(i)" type="button">-</button>
+        <input
+          formControlName="phone"
+          type="text"
+          placeholder="Enter Phone Number"
+          id="phone-{{ i }}"
+        />
+        <button class="remove-button" (click)="onRemovePhone(i)" type="button">
+          -
+        </button>
       </div>
     </div>
+  </fieldset>
+
+  <fieldset formGroupName="skills">
+    <legend>User Skills</legend>
+    <ng-container *ngIf="skills$ | async as skills; else loading">
+      <div class="skill-container" *ngFor="let skill of skills">
+        <input type="checkbox" [formControlName]="skill" [id]="skill" />
+        <label [for]="skill">{{ skill | titlecase }}</label>
+      </div>
+    </ng-container>
   </fieldset>
 
   <button>Save</button>
   <button class="reset-button" type="reset">Reset</button>
 </form>
+
+<ng-template #loading>
+  <p>Skills are loading...</p>
+</ng-template>

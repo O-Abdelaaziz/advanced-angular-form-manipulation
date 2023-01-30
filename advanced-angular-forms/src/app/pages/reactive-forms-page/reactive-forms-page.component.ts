@@ -1,3 +1,5 @@
+import { UserSkillsService } from './../../services/user-skills.service';
+import { Observable, tap } from 'rxjs';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -21,6 +23,8 @@ import {
 })
 export class ReactiveFormsPageComponent implements OnInit {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
+  public skills$!: Observable<string[]>;
+
   public userForm = new FormGroup({
     //(property) firstName: FormControl<string | null> because if we want to rest the control is become null
     firstName: new FormControl<string>('Ouakala'),
@@ -42,11 +46,16 @@ export class ReactiveFormsPageComponent implements OnInit {
         phone: new FormControl(''),
       }),
     ]),
+    skills: new FormGroup<{ [key: string]: FormControl<boolean> }>({}),
   });
 
-  constructor() {}
+  constructor(private _userSkills: UserSkillsService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.skills$ = this._userSkills
+      .getSkills()
+      .pipe(tap((skills) => this.buildSkillControls(skills)));
+  }
 
   get years() {
     const now = new Date().getUTCFullYear();
@@ -74,5 +83,14 @@ export class ReactiveFormsPageComponent implements OnInit {
   public onSubmit(event: Event) {
     console.log('Form submitted: ' + this.userForm.value);
     this.userForm.controls.username.reset();
+  }
+
+  private buildSkillControls(skills: string[]) {
+    skills.forEach((skill) =>
+      this.userForm.controls.skills.addControl(
+        skill,
+        new FormControl(false, { nonNullable: true })
+      )
+    );
   }
 }
