@@ -6,7 +6,14 @@ export const routes: Routes = [
     title: 'Template-Driven Forms Playground',
     loadComponent:
       () => import('./pages/template-forms-page/template-forms-page.component')
-        .then(m => m.TemplateFormsPageComponent)
+        .then(d => d.TemplateFormsPageComponent)
+  },
+  {
+    path: 'reactive-forms',
+    title: 'Reactive Forms Playground',
+    loadComponent:
+      () => import('./pages/reactive-forms-page/reactive-forms-page.component')
+        .then(r => r.ReactiveFormsPageComponent)
   },
 ];
 
