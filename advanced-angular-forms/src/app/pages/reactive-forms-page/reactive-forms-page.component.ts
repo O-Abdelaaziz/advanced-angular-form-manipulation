@@ -22,10 +22,11 @@ import {
 export class ReactiveFormsPageComponent implements OnInit {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public userForm = new FormGroup({
-    //(property) firstName: FormControl<string | null> because if we went to rest the control is become null
+    //(property) firstName: FormControl<string | null> because if we want to rest the control is become null
     firstName: new FormControl<string>('Ouakala'),
-    lastName: new FormControl('Abdelaaziz'),
-    username: new FormControl('a.ouakala'),
+    lastName: new FormControl<string>('Abdelaaziz'),
+    //in this scenario username can't be null and a.ouakala is the default value when reset the form.
+    username: new FormControl<string>('a.ouakala', { nonNullable: true }),
     nickname: new FormControl(''),
     email: new FormControl(''),
     yearOfBirth: new FormControl(''),
@@ -37,7 +38,7 @@ export class ReactiveFormsPageComponent implements OnInit {
     }),
     phones: new FormArray([
       new FormGroup({
-        label: new FormControl(this.phoneLabels[0]),
+        label: new FormControl(this.phoneLabels[0], { nonNullable: true }),
         phone: new FormControl(''),
       }),
     ]),
@@ -59,7 +60,7 @@ export class ReactiveFormsPageComponent implements OnInit {
     this.userForm.controls.phones.insert(
       0,
       new FormGroup({
-        label: new FormControl(this.phoneLabels[0]),
+        label: new FormControl(this.phoneLabels[0], { nonNullable: true }),
         phone: new FormControl(''),
       })
     );
@@ -72,5 +73,6 @@ export class ReactiveFormsPageComponent implements OnInit {
 
   public onSubmit(event: Event) {
     console.log('Form submitted: ' + this.userForm.value);
+    this.userForm.controls.username.reset();
   }
 }
