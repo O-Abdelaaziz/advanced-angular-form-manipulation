@@ -23,9 +23,11 @@ export class ReactiveFormsPageComponent implements OnInit {
     email: new FormControl(''),
     yearOfBirth: new FormControl(''),
     passport: new FormControl(''),
-    fullAddress: new FormControl(''),
-    city: new FormControl(''),
-    postCode: new FormControl(''),
+    address: new FormGroup({
+      fullAddress: new FormControl(''),
+      city: new FormControl(''),
+      postCode: new FormControl(''),
+    }),
   });
 
   constructor() {}
