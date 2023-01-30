@@ -1,6 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-reactive-forms-page',
@@ -28,6 +33,7 @@ export class ReactiveFormsPageComponent implements OnInit {
       city: new FormControl(''),
       postCode: new FormControl(''),
     }),
+    phones: new FormArray([new FormControl('')]),
   });
 
   constructor() {}
@@ -39,5 +45,15 @@ export class ReactiveFormsPageComponent implements OnInit {
     return Array(now - 1949)
       .fill('')
       .map((_, index) => now - index);
+  }
+
+  public onAddPhone() {
+    console.log('add phone button clicked!!!');
+    this.userForm.controls.phones.insert(0, new FormControl(''));
+  }
+
+  public onRemovePhone(index: number) {
+    console.log('remove phone button clicked!!!');
+    this.userForm.controls.phones.removeAt(index);
   }
 }
