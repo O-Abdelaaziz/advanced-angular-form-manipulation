@@ -1,34 +1,72 @@
-<form class="form">
+<form [formGroup]="userForm" class="form">
+  <p>Form Reference Status</p>
+  <pre>{{ userForm.value | json }}</pre>
+
   <div class="form-field">
     <label for="name">First Name</label>
-    <input type="text" id="name" placeholder="Enter your name">
-    </div>
+    <input
+      type="text"
+      id="name"
+      formControlName="firstName"
+      placeholder="Enter your name"
+    />
+  </div>
   <div class="form-field">
     <label for="last-name">Last Name</label>
-    <input  type="text" id="last-name" placeholder="Enter your last name">
+    <input
+      type="text"
+      id="last-name"
+      formControlName="lastName"
+      placeholder="Enter your last name"
+    />
+  </div>
+
+  <div class="form-field">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      formControlName="username"
+      placeholder="Come up with a username"
+    />
   </div>
 
   <div class="form-field">
     <label for="nickname">Nickname</label>
-    <input type="text" id="nickname" placeholder="Come up with a nickname">
+    <input
+      type="text"
+      id="nickname"
+      formControlName="nickname"
+      placeholder="Come up with a nickname"
+    />
   </div>
 
   <div class="form-field">
     <label for="email">Email</label>
-    <input type="email" id="email" placeholder="Provide your email">
+    <input
+      type="email"
+      id="email"
+      formControlName="email"
+      placeholder="Provide your email"
+    />
   </div>
 
   <div class="form-field-inline-group">
     <div class="form-field form-field--small">
       <label for="year-of-birth">Year of birth</label>
-      <select id="year-of-birth">
-        <option >2023</option>
+      <select id="year-of-birth" formControlName="yearOfBirth">
+        <option *ngFor="let year of years">{{ year }}</option>
       </select>
     </div>
 
     <div class="form-field form-field--small">
       <label for="passport">Passport Number</label>
-      <input  type="text" id="passport" placeholder="Provide Passport Data">
+      <input
+        type="text"
+        id="passport"
+        formControlName="passport"
+        placeholder="Provide Passport Data"
+      />
     </div>
   </div>
 
@@ -36,24 +74,30 @@
     <legend>Address</legend>
     <div class="form-field">
       <label for="full-address">Full Address</label>
-      <input  type="text" id="full-address" placeholder="Street name and house number">
+      <input
+        type="text"
+        id="full-address"
+        formControlName="fullAddress"
+        placeholder="Street name and house number"
+      />
     </div>
 
     <div class="form-field">
       <label for="city">City</label>
-      <input type="text" id="city" placeholder="City">
+      <input type="text" id="city" formControlName="city" placeholder="City" />
     </div>
 
     <div class="form-field">
       <label for="post-code">Post Code</label>
-      <input type="number" id="post-code" placeholder="Post code">
+      <input
+        type="number"
+        id="post-code"
+        formControlName="postCode"
+        placeholder="Post code"
+      />
     </div>
-
   </fieldset>
 
-  <button >Save</button>
-  <button class="reset-button" type="reset" >Reset</button>
+  <button>Save</button>
+  <button class="reset-button" type="reset">Reset</button>
 </form>
-
-
-
