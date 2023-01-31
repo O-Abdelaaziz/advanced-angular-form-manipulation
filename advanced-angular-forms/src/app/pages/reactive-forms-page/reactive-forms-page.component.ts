@@ -15,16 +15,16 @@ import {
   ChangeDetectionStrategy,
   OnDestroy,
   ChangeDetectorRef,
+  ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
-  FormArray,
   FormControl,
   FormGroup,
-  FormRecord,
   ReactiveFormsModule,
   Validators,
+  FormGroupDirective,
 } from '@angular/forms';
 import { passwordShouldMatch } from 'src/app/validators/password-should-match.validator';
 
@@ -50,8 +50,13 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public skills$!: Observable<string[]>;
 
-  public ageValidators!: Subscription;
+  private ageValidators!: Subscription;
   private formPendingState!: Subscription;
+
+  private inialFormValues: any;
+
+  @ViewChild(FormGroupDirective)
+  public formDir!: FormGroupDirective;
 
   public userForm = this._formBuilder.group({
     firstName: [
@@ -117,9 +122,10 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.skills$ = this._userSkills
-      .getSkills()
-      .pipe(tap((skills) => this.buildSkillControls(skills)));
+    this.skills$ = this._userSkills.getSkills().pipe(
+      tap((skills) => this.buildSkillControls(skills)),
+      tap(() => (this.inialFormValues = this.userForm.value))
+    );
     // this.userForm.controls.address.addControl('city', new FormControl());
 
     this.ageValidators = this.userForm.controls.yearOfBirth.valueChanges
@@ -169,7 +175,14 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
 
   public onSubmit(event: Event) {
     console.log('Form submitted: ' + this.userForm.value);
-    this.userForm.controls.username.reset();
+    // this.userForm.reset();
+    this.inialFormValues = this.userForm.value;
+    this.formDir.resetForm(this.userForm.value);
+  }
+
+  public onReset(event: Event) {
+    event.preventDefault();
+    this.formDir.resetForm(this.inialFormValues);
   }
 
   private buildSkillControls(skills: string[]) {

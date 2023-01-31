@@ -1,4 +1,4 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit($event)" class="form">
+<form [formGroup]="userForm" (reset)="onReset($event)" (ngSubmit)="onSubmit($event)" class="form">
   <p>Form Reference Status</p>
   <pre>{{userForm.status | json}}</pre>
   <pre>{{ userForm.value | json }}</pre>
