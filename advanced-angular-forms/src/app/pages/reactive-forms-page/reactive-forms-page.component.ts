@@ -1,3 +1,4 @@
+import { banWords } from 'src/app/validators/ban-words.validator';
 import { UserSkillsService } from './../../services/user-skills.service';
 import { Observable, tap } from 'rxjs';
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
@@ -35,13 +36,22 @@ export class ReactiveFormsPageComponent implements OnInit {
   public skills$!: Observable<string[]>;
 
   public userForm = this._formBuilder.group({
-    firstName: ['Ouakala', [Validators.required, Validators.minLength(2)]],
+    firstName: [
+      'Ouakala',
+      [
+        Validators.required,
+        Validators.minLength(2),
+        banWords(['admin', 'dummy']),
+      ],
+    ],
     lastName: ['Abdelaaziz', [Validators.required, Validators.minLength(2)]],
     nickname: [
       'a.ouakala',
-      [Validators.required,
-      Validators.minLength(2),
-      Validators.pattern(/^[\w.]+$/)],
+      [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern(/^[\w.]+$/),
+      ],
     ],
     username: ['', [Validators.required, Validators.minLength(2)]],
     email: [
