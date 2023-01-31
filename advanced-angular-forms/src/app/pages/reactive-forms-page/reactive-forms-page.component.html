@@ -10,6 +10,22 @@
       formControlName="firstName"
       placeholder="Enter your name"
     />
+    <ng-container *ngIf="userForm.controls.firstName as firstName">
+      <div
+        class="input-error"
+        *ngIf="firstName.dirty && firstName.hasError('required')"
+      >
+        This field is required
+      </div>
+      <div
+        class="input-error"
+        *ngIf="firstName.dirty && firstName.hasError('minlength')"
+      >
+        The name must be at least
+        <strong>{{ firstName.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
+    </ng-container>
   </div>
   <div class="form-field">
     <label for="last-name">Last Name</label>
@@ -19,16 +35,22 @@
       formControlName="lastName"
       placeholder="Enter your last name"
     />
-  </div>
-
-  <div class="form-field">
-    <label for="username">Username</label>
-    <input
-      type="text"
-      id="username"
-      formControlName="username"
-      placeholder="Come up with a username"
-    />
+    <ng-container *ngIf="userForm.controls.lastName as lastName">
+      <div
+        class="input-error"
+        *ngIf="lastName.dirty && lastName.hasError('required')"
+      >
+        This field is required
+      </div>
+      <div
+        class="input-error"
+        *ngIf="lastName.dirty && lastName.hasError('minlength')"
+      >
+        The name must be at least
+        <strong>{{ lastName.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
+    </ng-container>
   </div>
 
   <div class="form-field">
@@ -39,6 +61,54 @@
       formControlName="nickname"
       placeholder="Come up with a nickname"
     />
+    <ng-container *ngIf="userForm.controls.nickname as nickname">
+      <div
+        class="input-error"
+        *ngIf="nickname.dirty && nickname.hasError('required')"
+      >
+        This field is required
+      </div>
+      <div
+        class="input-error"
+        *ngIf="nickname.dirty && nickname.hasError('minlength')"
+      >
+        The name must be at least
+        <strong>{{ nickname.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
+      <div
+        class="input-error"
+        *ngIf="nickname.dirty && nickname.hasError('pattern')"
+      >
+        Only letters, numbers, _ and . is allowed
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="form-field">
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      formControlName="username"
+      placeholder="Come up with a username"
+    />
+    <ng-container *ngIf="userForm.controls.username as username">
+      <div
+        class="input-error"
+        *ngIf="username.dirty && username.hasError('required')"
+      >
+        This field is required
+      </div>
+      <div
+        class="input-error"
+        *ngIf="username.dirty && username.hasError('minlength')"
+      >
+        The name must be at least
+        <strong>{{ username.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
+    </ng-container>
   </div>
 
   <div class="form-field">
@@ -49,6 +119,25 @@
       formControlName="email"
       placeholder="Provide your email"
     />
+    <ng-container *ngIf="userForm.controls.email as email">
+      <div
+        class="input-error"
+        *ngIf="email.dirty && email.hasError('required')"
+      >
+        This field is required
+      </div>
+      <div class="input-error" *ngIf="email.dirty && email.hasError('email')">
+        The email is not valid
+      </div>
+      <div
+        class="input-error"
+        *ngIf="email.dirty && email.hasError('minlength')"
+      >
+        The name must be at least
+        <strong>{{ email.getError("minlength").requiredLength }}</strong>
+        characters
+      </div>
+    </ng-container>
   </div>
 
   <div class="form-field-inline-group">
@@ -67,6 +156,20 @@
         formControlName="passport"
         placeholder="Provide Passport Data"
       />
+      <ng-container *ngIf="userForm.controls.passport as passport">
+        <div
+          class="input-error"
+          *ngIf="passport.dirty && passport.hasError('pattern')"
+        >
+          Allowed format is: AB123456
+        </div>
+        <div
+          class="input-error"
+          *ngIf="passport.dirty && passport.hasError('required')"
+        >
+          This field is required
+        </div>
+      </ng-container>
     </div>
   </div>
 
@@ -80,11 +183,29 @@
         formControlName="fullAddress"
         placeholder="Street name and house number"
       />
+      <ng-container
+        *ngIf="userForm.controls.address.controls.fullAddress as fullAddress"
+      >
+        <div
+          class="input-error"
+          *ngIf="fullAddress.dirty && fullAddress.hasError('required')"
+        >
+          This field is required
+        </div>
+      </ng-container>
     </div>
 
     <div class="form-field">
       <label for="city">City</label>
       <input type="text" id="city" formControlName="city" placeholder="City" />
+      <ng-container *ngIf="userForm.controls.address.controls.city as city">
+        <div
+          class="input-error"
+          *ngIf="city.dirty && city.hasError('required')"
+        >
+          This field is required
+        </div>
+      </ng-container>
     </div>
 
     <div class="form-field">
@@ -95,6 +216,16 @@
         formControlName="postCode"
         placeholder="Post code"
       />
+      <ng-container
+        *ngIf="userForm.controls.address.controls.postCode as postCode"
+      >
+        <div
+          class="input-error"
+          *ngIf="postCode.dirty && postCode.hasError('required')"
+        >
+          This field is required
+        </div>
+      </ng-container>
     </div>
   </fieldset>
 
