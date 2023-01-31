@@ -12,6 +12,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { passwordShouldMatch } from 'src/app/validators/password-should-match.validator';
 
 // interface Address {
 //   fullAddress: FormControl<string>;
@@ -73,8 +74,14 @@ export class ReactiveFormsPageComponent implements OnInit {
         phone: '',
       }),
     ]),
-    //FormRecord extends FormGroup{<[key: string]: TControl}>{}
     skills: this._formBuilder.record<FormControl<boolean>>({}),
+    password: this._formBuilder.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: '',
+      },
+      { validator: passwordShouldMatch }
+    ),
   });
 
   constructor(
