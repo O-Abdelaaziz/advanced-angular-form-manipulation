@@ -1,7 +1,12 @@
 import { banWords } from 'src/app/validators/ban-words.validator';
 import { UserSkillsService } from './../../services/user-skills.service';
-import { Observable, tap } from 'rxjs';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Observable, startWith, Subscription, tap } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -32,9 +37,10 @@ import { passwordShouldMatch } from 'src/app/validators/password-should-match.va
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReactiveFormsPageComponent implements OnInit {
+export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public skills$!: Observable<string[]>;
+  public ageValidators!: Subscription;
 
   public userForm = this._formBuilder.group({
     firstName: [
@@ -94,6 +100,20 @@ export class ReactiveFormsPageComponent implements OnInit {
       .getSkills()
       .pipe(tap((skills) => this.buildSkillControls(skills)));
     // this.userForm.controls.address.addControl('city', new FormControl());
+
+    this.ageValidators = this.userForm.controls.yearOfBirth.valueChanges
+      .pipe(
+        tap(() => this.userForm.controls.passport.markAsDirty()),
+        startWith(this.userForm.controls.yearOfBirth.value)
+      )
+      .subscribe((yearOfBirth) => {
+        this.isAdult(yearOfBirth)
+          ? this.userForm.controls.passport.addValidators(Validators.required)
+          : this.userForm.controls.passport.removeValidators(
+              Validators.required
+            );
+        this.userForm.controls.passport.updateValueAndValidity();
+      });
   }
 
   get years() {
@@ -131,5 +151,14 @@ export class ReactiveFormsPageComponent implements OnInit {
         new FormControl(false, { nonNullable: true })
       )
     );
+  }
+
+  private isAdult(yearOfBirth: number): boolean {
+    const currentYear = new Date().getFullYear();
+    return currentYear - yearOfBirth >= 18;
+  }
+
+  ngOnDestroy(): void {
+    this.ageValidators.unsubscribe();
   }
 }
