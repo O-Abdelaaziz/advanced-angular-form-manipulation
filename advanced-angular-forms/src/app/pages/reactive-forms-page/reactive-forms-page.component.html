@@ -1,5 +1,6 @@
 <form [formGroup]="userForm" (ngSubmit)="onSubmit($event)" class="form">
   <p>Form Reference Status</p>
+  <pre>{{userForm.status | json}}</pre>
   <pre>{{ userForm.value | json }}</pre>
 
   <div class="form-field">
@@ -75,6 +76,15 @@
         *ngIf="nickname.dirty && nickname.hasError('required')"
       >
         This field is required
+      </div>
+      <div
+        class="input-error"
+        *ngIf="nickname.dirty && nickname.hasError('uniqueName')"
+      >
+        This nickname is already taken
+      </div>
+      <div class="input-info" *ngIf="nickname.pending">
+        Checking nickname...
       </div>
       <div
         class="input-error"
@@ -334,7 +344,7 @@
     </div>
   </fieldset>
 
-  <button [disabled]="userForm.invalid">Save</button>
+  <button [disabled]="userForm.invalid || userForm.pending">Save</button>
   <button class="reset-button" type="reset">Reset</button>
 </form>
 

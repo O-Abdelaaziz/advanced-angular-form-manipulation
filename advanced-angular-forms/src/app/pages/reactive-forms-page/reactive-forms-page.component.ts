@@ -1,11 +1,20 @@
+import { UniqueNicknameValidator } from './../../validators/unique-nickname.validator';
 import { banWords } from 'src/app/validators/ban-words.validator';
 import { UserSkillsService } from './../../services/user-skills.service';
-import { Observable, startWith, Subscription, tap } from 'rxjs';
+import {
+  bufferCount,
+  filter,
+  Observable,
+  startWith,
+  Subscription,
+  tap,
+} from 'rxjs';
 import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -40,7 +49,9 @@ import { passwordShouldMatch } from 'src/app/validators/password-should-match.va
 export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
   public phoneLabels = ['Main', 'Mobile', 'Work', 'Home'];
   public skills$!: Observable<string[]>;
+
   public ageValidators!: Subscription;
+  private formPendingState!: Subscription;
 
   public userForm = this._formBuilder.group({
     firstName: [
@@ -54,11 +65,19 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
     lastName: ['Abdelaaziz', [Validators.required, Validators.minLength(2)]],
     nickname: [
       'a.ouakala',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern(/^[\w.]+$/),
-      ],
+      {
+        validators: [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.pattern(/^[\w.]+$/),
+        ],
+        asyncValidator: [
+          this._uniqueNicknameValidator.validate.bind(
+            this._uniqueNicknameValidator
+          ),
+        ],
+        updateOn: 'blur',
+      },
     ],
     username: ['', [Validators.required, Validators.minLength(2)]],
     email: [
@@ -92,6 +111,8 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
 
   constructor(
     private _userSkills: UserSkillsService,
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _uniqueNicknameValidator: UniqueNicknameValidator,
     private _formBuilder: FormBuilder
   ) {}
 
@@ -114,6 +135,13 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
             );
         this.userForm.controls.passport.updateValueAndValidity();
       });
+
+    this.formPendingState = this.userForm.statusChanges
+      .pipe(
+        bufferCount(2, 1),
+        filter(([prevState]) => prevState === 'PENDING')
+      )
+      .subscribe(() => this._changeDetectorRef.markForCheck());
   }
 
   get years() {
@@ -160,5 +188,6 @@ export class ReactiveFormsPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.ageValidators.unsubscribe();
+    this.formPendingState.unsubscribe();
   }
 }
