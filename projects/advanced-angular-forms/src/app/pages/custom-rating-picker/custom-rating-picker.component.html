@@ -1,12 +1,16 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form review">
   <h3>Course Review</h3>
-  <paper-textarea
+  <!-- <paper-textarea
     ngDefaultControl
     formControlName="reviewText"
     placeholder="Your honest review..."
     label="Review Text"
     rows="2"
     class="review-text"
-  ></paper-textarea>
+  ></paper-textarea> -->
+  <div class="review-textarea" contenteditable formControlName="reviewText">
+    <h4 data-placeholder="Title..."></h4>
+    <p data-placeholder="Describe Your Experiance..."></p>
+  </div>
   <button>Save</button>
 </form>
