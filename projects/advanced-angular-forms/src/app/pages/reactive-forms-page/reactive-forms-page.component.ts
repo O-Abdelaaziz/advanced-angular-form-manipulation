@@ -1,5 +1,5 @@
 import { UniqueNicknameValidator } from './../../validators/unique-nickname.validator';
-import { banWords } from 'src/app/validators/ban-words.validator';
+import { banWords } from './../../validators/ban-words.validator';
 import { UserSkillsService } from './../../services/user-skills.service';
 import {
   bufferCount,
@@ -26,7 +26,7 @@ import {
   Validators,
   FormGroupDirective,
 } from '@angular/forms';
-import { passwordShouldMatch } from 'src/app/validators/password-should-match.validator';
+import { passwordShouldMatch } from './../../validators/password-should-match.validator';
 
 // interface Address {
 //   fullAddress: FormControl<string>;
