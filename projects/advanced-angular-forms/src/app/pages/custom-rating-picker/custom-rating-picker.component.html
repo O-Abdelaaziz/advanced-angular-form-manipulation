@@ -8,9 +8,11 @@
     rows="2"
     class="review-text"
   ></paper-textarea> -->
-  <div class="review-textarea" contenteditable formControlName="reviewText">
-    <h4 data-placeholder="Title..."></h4>
-    <p data-placeholder="Describe Your Experiance..."></p>
-  </div>
+  <div
+    class="review-textarea"
+    contenteditable
+    formControlName="reviewText"
+  ></div>
+  <lib-rating-picker formControlName="reviewRating"></lib-rating-picker>
   <button>Save</button>
 </form>
