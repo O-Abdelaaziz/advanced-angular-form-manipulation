@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'custom-form-controls';
 
@@ -7,7 +7,10 @@ import { SelectModule } from 'custom-form-controls';
   standalone: true,
   imports: [CommonModule, SelectModule],
   templateUrl: './custom-select-page.component.html',
-  styleUrls: ['./custom-select-page.component.scss'],
+  styleUrls: [
+    './custom-select-page.component.scss',
+    '../../style/common-page.scss',
+  ],
 })
 export class CustomSelectPageComponent implements OnInit {
   constructor() {}
