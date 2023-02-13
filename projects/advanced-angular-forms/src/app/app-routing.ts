@@ -25,4 +25,12 @@ export const routes: Routes = [
         './pages/custom-rating-picker/custom-rating-picker.component'
       ).then((c) => c.CustomRatingPickerComponent),
   },
+  {
+    path: 'custom-select',
+    title: 'Custom Select',
+    loadComponent: () =>
+      import(
+        './pages/custom-select-page/custom-select-page.component'
+      ).then((s) => s.CustomSelectPageComponent),
+  },
 ];
