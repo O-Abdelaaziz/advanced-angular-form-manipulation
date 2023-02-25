@@ -17,7 +17,7 @@
     (detach)="close()"
     >
     <div class="panel" [@dropDown] (@dropDown.done)="onPanelAnimationDone($event)">
-      <p>items here</p>
+      <ng-content></ng-content>
     </div>
   </ng-template>
   <!-- cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop" to remove backrop -->
