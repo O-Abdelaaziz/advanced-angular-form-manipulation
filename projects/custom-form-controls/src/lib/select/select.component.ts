@@ -6,6 +6,7 @@ import {
   animate,
   AnimationEvent,
 } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import {
   Component,
   AfterContentInit,
@@ -15,7 +16,12 @@ import {
   EventEmitter,
   ContentChildren,
   QueryList,
+  OnDestroy,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { merge } from 'rxjs/internal/observable/merge';
+import { startWith } from 'rxjs/internal/operators/startWith';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { OptionComponent } from './option/option.component';
 
 // There is an alias for 'void => *' is ':enter'
@@ -36,18 +42,33 @@ import { OptionComponent } from './option/option.component';
     ]),
   ],
 })
-export class SelectComponent implements AfterContentInit {
+export class SelectComponent implements AfterContentInit, OnDestroy {
   @Input()
   public label: string = '';
 
   @Input()
-  public value: string | null = null;
+  set value(value: string | null) {
+    this.selectionModel.clear();
+    if (value) {
+      this.selectionModel.select(value);
+    }
+  }
+  get value() {
+    return this.selectionModel.selected[0] || null;
+  }
+
+  private selectionModel = new SelectionModel<string>();
 
   @Output()
   public opened = new EventEmitter<void>();
 
   @Output()
   public closed = new EventEmitter<void>();
+
+  @Output()
+  public selectionChanged = new EventEmitter<string | null>();
+
+  private unsubscribe$ = new Subject<void>();
 
   public isOpen: boolean = false;
 
@@ -67,6 +88,26 @@ export class SelectComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.highlightSelectedOptions(this.value);
+    this.selectionModel.changed
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((values) => {
+        values.removed.forEach((rv) => this.findOptionsByValue(rv)?.deselect());
+      });
+    this.options.changes
+      .pipe(
+        startWith<QueryList<OptionComponent>>(this.options),
+        switchMap((options) => merge(...options.map((o) => o.selected))),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((selectedOption) => this.handleSelection(selectedOption));
+  }
+
+  private handleSelection(selectedOption: OptionComponent): void {
+    if (selectedOption.value) {
+      this.selectionModel.toggle(selectedOption.value);
+      this.selectionChanged.emit(this.value);
+    }
+    this.close();
   }
 
   public onPanelAnimationDone({ fromState, toState }: AnimationEvent) {
@@ -85,5 +126,10 @@ export class SelectComponent implements AfterContentInit {
 
   private findOptionsByValue(value: string | null) {
     return this.options && this.options.find((o) => o.value === value);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

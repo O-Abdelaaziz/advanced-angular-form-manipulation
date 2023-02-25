@@ -1,6 +1,7 @@
-<lib-select value="Abdelaaziz Ahmed" label="Select User">
+<lib-select (selectionChanged)="onSelectionChanged($event)" value="Abdelaaziz Ahmed" label="Select User">
   <h5>Available Options:</h5>
   <lib-option value="Abdelaaziz Ouakala" [disabled]="true" disabledReason="is admin">Abdelaaziz Ouakala</lib-option>
   <lib-option value="Abdelaaziz Ahmed">Ahmed Ouakala</lib-option>
+  <lib-option value="Amine Mahi">Amine Mahi</lib-option>
 </lib-select>
 
