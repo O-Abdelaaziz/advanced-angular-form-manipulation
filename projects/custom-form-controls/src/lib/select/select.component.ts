@@ -51,6 +51,7 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
     this.selectionModel.clear();
     if (value) {
       this.selectionModel.select(value);
+      // this.highlightSelectedOptions(value);
     }
   }
   get value() {
@@ -92,6 +93,7 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((values) => {
         values.removed.forEach((rv) => this.findOptionsByValue(rv)?.deselect());
+        values.added.forEach(av => this.findOptionsByValue(av)?.highlightAsSelected());
       });
     this.options.changes
       .pipe(

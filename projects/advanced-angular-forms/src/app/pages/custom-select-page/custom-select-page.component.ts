@@ -14,13 +14,15 @@ const c = console.log.bind(this);
   ],
 })
 export class CustomSelectPageComponent implements OnInit {
+  public selectedValue: string | null = null;
+
   constructor() {}
 
   ngOnInit(): void {}
 
-  public onSelectionChanged(event: string | null) {
-   // console.log(event);
-
+  public onSelectionChanged(value: string | null) {
+    // console.log(event);
+    this.selectedValue = value;
     c(event);
   }
 }
