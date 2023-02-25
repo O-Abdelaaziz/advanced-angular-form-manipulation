@@ -1,9 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 
 @Component({
   selector: 'lib-select',
   templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss']
+  styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent implements OnInit {
   @Input()
@@ -12,9 +12,18 @@ export class SelectComponent implements OnInit {
   @Input()
   public value: string | null = null;
 
-  constructor() { }
+  public isOpen: boolean = false;
 
-  ngOnInit(): void {
+  @HostListener('click')
+  public open() {
+    this.isOpen = true;
   }
 
+  public close() {
+    this.isOpen = false;
+  }
+
+  constructor() {}
+
+  ngOnInit(): void {}
 }
