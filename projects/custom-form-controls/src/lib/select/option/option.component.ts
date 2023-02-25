@@ -17,6 +17,13 @@ export class OptionComponent implements OnInit {
   @Input()
   public value: string | null = null;
 
+  @Input()
+  public disabledReason: string | null = null;
+
+  @Input()
+  @HostBinding('class.disabled')
+  public disabled: boolean = false;
+
   @Output()
   public selected: EventEmitter<OptionComponent> =
     new EventEmitter<OptionComponent>();
@@ -30,8 +37,10 @@ export class OptionComponent implements OnInit {
 
   @HostListener('click')
   select() {
-    this.isSelected = true;
-    this.selected.emit(this);
+    if (!this.disabled) {
+      this.isSelected = true;
+      this.selected.emit(this);
+    }
   }
 
   deselect() {

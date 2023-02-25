@@ -24,7 +24,8 @@
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
-    border: var(--color-text-light) dashed 1px;
+    // border: var(--color-text-light) dashed 1px;
+    border: var(--color-accent) dashed 1px;
   }
   &.active {
     border: var(--color-text-light, #bbcdd5) 1px dashed;
@@ -35,8 +36,10 @@
   width: 100%;
 }
 .disabled-reason:not(:empty) {
-  font-size: 8px;
-  background: #d7d8d9;
+  font-size: 12px;
+  // background: #d7d8d9;
+  background: #DA4452;
+  color: white;
   padding: 1px 5px;
   border-radius: 3px;
   white-space: nowrap;
