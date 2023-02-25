@@ -7,13 +7,14 @@ import {
   HostListener,
   HostBinding,
 } from '@angular/core';
+import { Highlightable } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'lib-option',
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss'],
 })
-export class OptionComponent implements OnInit {
+export class OptionComponent implements OnInit, Highlightable {
   @Input()
   public value: string | null = null;
 
@@ -36,14 +37,28 @@ export class OptionComponent implements OnInit {
   ngOnInit(): void {}
 
   @HostListener('click')
-  select() {
+  protected select() {
     if (!this.disabled) {
       this.isSelected = true;
       this.selected.emit(this);
     }
   }
 
-  deselect() {
+  public highlightAsSelected() {
+    this.isSelected = true;
+  }
+
+  public deselect() {
     this.isSelected = false;
+  }
+
+  setActiveStyles(): void {
+    throw new Error('Method not implemented.');
+  }
+  setInactiveStyles(): void {
+    throw new Error('Method not implemented.');
+  }
+  getLabel?(): string {
+    throw new Error('Method not implemented.');
   }
 }
