@@ -10,6 +10,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import {
   Component,
   AfterContentInit,
+  OnChanges,
   Input,
   Output,
   HostListener,
@@ -18,6 +19,7 @@ import {
   QueryList,
   OnDestroy,
   ChangeDetectionStrategy,
+  SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -46,12 +48,17 @@ export type SelectValue<T> = T | null;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectComponent<T> implements AfterContentInit, OnDestroy {
+export class SelectComponent<T>
+  implements OnChanges, AfterContentInit, OnDestroy
+{
   @Input()
   public label: string = '';
 
   @Input()
   public displayWith: ((value: T) => string | number) | null = null;
+
+  @Input()
+  compareWith: (v1: T | null, v2: T | null) => boolean = (v1, v2) => v1 === v2;
 
   @Input()
   set value(value: SelectValue<T>) {
@@ -61,6 +68,7 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
       // this.highlightSelectedOptions(value);
     }
   }
+
   get value() {
     return this.selectionModel.selected[0] || null;
   }
@@ -100,6 +108,13 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   options!: QueryList<OptionComponent<T>>;
 
   constructor() {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['compareWidth']) {
+      this.selectionModel.compareWith = changes['compareWidth'].currentValue;
+      this.highlightSelectedOptions(this.value);
+    }
+  }
 
   ngAfterContentInit(): void {
     this.highlightSelectedOptions(this.value);
@@ -146,7 +161,9 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   }
 
   private findOptionsByValue(value: SelectValue<T>) {
-    return this.options && this.options.find((o) => o.value === value);
+    return (
+      this.options && this.options.find((o) => this.compareWith(o.value, value))
+    );
   }
 
   ngOnDestroy(): void {
