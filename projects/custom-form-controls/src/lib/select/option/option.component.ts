@@ -9,7 +9,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { Highlightable } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'lib-option',

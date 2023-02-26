@@ -51,6 +51,9 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   public label: string = '';
 
   @Input()
+  public displayWith: ((value: T) => string | number) | null = null;
+
+  @Input()
   set value(value: SelectValue<T>) {
     this.selectionModel.clear();
     if (value) {
@@ -76,6 +79,13 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   private unsubscribe$ = new Subject<void>();
 
   public isOpen: boolean = false;
+
+  protected get displayValue() {
+    if (this.displayWith && this.value) {
+      return this.displayWith(this.value);
+    }
+    return this.value;
+  }
 
   @HostListener('click')
   public open() {
