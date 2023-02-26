@@ -24,6 +24,8 @@ import { startWith } from 'rxjs/internal/operators/startWith';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { OptionComponent } from './option/option.component';
 
+export type SelectValue<T> = T | null;
+
 // There is an alias for 'void => *' is ':enter'
 // There is an alias for '* => void' is ':leave'
 
@@ -42,12 +44,12 @@ import { OptionComponent } from './option/option.component';
     ]),
   ],
 })
-export class SelectComponent implements AfterContentInit, OnDestroy {
+export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   @Input()
   public label: string = '';
 
   @Input()
-  set value(value: string | null) {
+  set value(value: SelectValue<T>) {
     this.selectionModel.clear();
     if (value) {
       this.selectionModel.select(value);
@@ -58,7 +60,7 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
     return this.selectionModel.selected[0] || null;
   }
 
-  private selectionModel = new SelectionModel<string>();
+  private selectionModel = new SelectionModel<T>();
 
   @Output()
   public opened = new EventEmitter<void>();
@@ -67,7 +69,7 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
   public closed = new EventEmitter<void>();
 
   @Output()
-  public selectionChanged = new EventEmitter<string | null>();
+  public selectionChanged = new EventEmitter<SelectValue<T>>();
 
   private unsubscribe$ = new Subject<void>();
 
@@ -83,7 +85,7 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
   }
 
   @ContentChildren(OptionComponent, { descendants: true })
-  options!: QueryList<OptionComponent>;
+  options!: QueryList<OptionComponent<T>>;
 
   constructor() {}
 
@@ -97,14 +99,14 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
       });
     this.options.changes
       .pipe(
-        startWith<QueryList<OptionComponent>>(this.options),
+        startWith<QueryList<OptionComponent<T>> >(this.options),
         switchMap((options) => merge(...options.map((o) => o.selected))),
         takeUntil(this.unsubscribe$)
       )
       .subscribe((selectedOption) => this.handleSelection(selectedOption));
   }
 
-  private handleSelection(selectedOption: OptionComponent): void {
+  private handleSelection(selectedOption: OptionComponent<T>): void {
     if (selectedOption.value) {
       this.selectionModel.toggle(selectedOption.value);
       this.selectionChanged.emit(this.value);
@@ -122,11 +124,11 @@ export class SelectComponent implements AfterContentInit, OnDestroy {
     }
   }
 
-  private highlightSelectedOptions(value: string | null) {
+  private highlightSelectedOptions(value: SelectValue<T>) {
     this.findOptionsByValue(value)?.highlightAsSelected();
   }
 
-  private findOptionsByValue(value: string | null) {
+  private findOptionsByValue(value: SelectValue<T>) {
     return this.options && this.options.find((o) => o.value === value);
   }
 

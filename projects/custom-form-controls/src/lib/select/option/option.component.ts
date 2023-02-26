@@ -14,20 +14,20 @@ import { Highlightable } from '@angular/cdk/a11y';
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss'],
 })
-export class OptionComponent implements OnInit, Highlightable {
+export class OptionComponent<T> implements OnInit, Highlightable {
   @Input()
-  public value: string | null = null;
+  public value: T | null = null;
 
   @Input()
-  public disabledReason: string | null = null;
+  public disabledReason: T | null = null;
 
   @Input()
   @HostBinding('class.disabled')
   public disabled: boolean = false;
 
   @Output()
-  public selected: EventEmitter<OptionComponent> =
-    new EventEmitter<OptionComponent>();
+  public selected: EventEmitter<OptionComponent<T>> =
+    new EventEmitter<OptionComponent<T>>();
 
   @HostBinding('class.selected')
   protected isSelected: boolean = false;
