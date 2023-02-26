@@ -88,6 +88,8 @@ export class SelectComponent<T>
 
   public isOpen: boolean = false;
 
+  private optionMap = new Map<T | null, OptionComponent<T>>();
+
   protected get displayValue() {
     if (this.displayWith && this.value) {
       return this.displayWith(this.value);
@@ -112,26 +114,25 @@ export class SelectComponent<T>
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['compareWidth']) {
       this.selectionModel.compareWith = changes['compareWidth'].currentValue;
-      this.highlightSelectedOptions(this.value);
+      this.highlightSelectedOptions();
     }
   }
 
   ngAfterContentInit(): void {
-    this.highlightSelectedOptions(this.value);
+    this.highlightSelectedOptions();
     this.selectionModel.changed
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((values) => {
-        values.removed.forEach((rv) => this.findOptionsByValue(rv)?.deselect());
+        values.removed.forEach((rv) => this.optionMap.get(rv)?.deselect());
         values.added.forEach((av) =>
-          this.findOptionsByValue(av)?.highlightAsSelected()
+          this.optionMap.get(av)?.highlightAsSelected()
         );
       });
     this.options.changes
       .pipe(
         startWith<QueryList<OptionComponent<T>>>(this.options),
-        tap(() =>
-          queueMicrotask(() => this.highlightSelectedOptions(this.value))
-        ),
+        tap(() => this.refreshOptionMap()),
+        tap(() => queueMicrotask(() => this.highlightSelectedOptions())),
         switchMap((options) => merge(...options.map((o) => o.selected))),
         takeUntil(this.unsubscribe$)
       )
@@ -156,14 +157,30 @@ export class SelectComponent<T>
     }
   }
 
-  private highlightSelectedOptions(value: SelectValue<T>) {
-    this.findOptionsByValue(value)?.highlightAsSelected();
+  private highlightSelectedOptions() {
+    const valueWithUpdateReferences = this.selectionModel.selected.map(
+      (value) => {
+        const correspondingOption = this.findOptionsByValue(value);
+        return correspondingOption ? correspondingOption.value! : value;
+      }
+    );
+    this.selectionModel.clear();
+    this.selectionModel.select(...valueWithUpdateReferences);
+    // this.findOptionsByValue(value)?.highlightAsSelected();
   }
 
   private findOptionsByValue(value: SelectValue<T>) {
+    if (this.optionMap.has(value)) {
+      return this.optionMap.get(value);
+    }
     return (
       this.options && this.options.find((o) => this.compareWith(o.value, value))
     );
+  }
+
+  private refreshOptionMap() {
+    this.optionMap.clear();
+    this.options.forEach((o) => this.optionMap.set(o.value, o));
   }
 
   ngOnDestroy(): void {
