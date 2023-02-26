@@ -6,6 +6,8 @@ import {
   EventEmitter,
   HostListener,
   HostBinding,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 
@@ -13,8 +15,9 @@ import { Highlightable } from '@angular/cdk/a11y';
   selector: 'lib-option',
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OptionComponent<T> implements OnInit, Highlightable {
+export class OptionComponent<T> implements OnInit {
   @Input()
   public value: T | null = null;
 
@@ -26,13 +29,14 @@ export class OptionComponent<T> implements OnInit, Highlightable {
   public disabled: boolean = false;
 
   @Output()
-  public selected: EventEmitter<OptionComponent<T>> =
-    new EventEmitter<OptionComponent<T>>();
+  public selected: EventEmitter<OptionComponent<T>> = new EventEmitter<
+    OptionComponent<T>
+  >();
 
   @HostBinding('class.selected')
   protected isSelected: boolean = false;
 
-  constructor() {}
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
 
@@ -46,19 +50,11 @@ export class OptionComponent<T> implements OnInit, Highlightable {
 
   public highlightAsSelected() {
     this.isSelected = true;
+    this._changeDetectorRef.markForCheck();
   }
 
   public deselect() {
     this.isSelected = false;
-  }
-
-  setActiveStyles(): void {
-    throw new Error('Method not implemented.');
-  }
-  setInactiveStyles(): void {
-    throw new Error('Method not implemented.');
-  }
-  getLabel?(): string {
-    throw new Error('Method not implemented.');
+    this._changeDetectorRef.markForCheck();
   }
 }

@@ -1,6 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SelectModule } from 'custom-form-controls';
+import { User } from '../../model/user';
 
 const c = console.log.bind(this);
 @Component({
@@ -12,9 +18,14 @@ const c = console.log.bind(this);
     './custom-select-page.component.scss',
     '../../style/common-page.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomSelectPageComponent implements OnInit {
   public selectedValue: string | null = null;
+  public users: User[] = [
+    new User(1, 'ouakala abdelaaziz', 'abdelaaziz', 'algeria', false),
+    new User(1, 'ouakala ahmed', 'ahmed', 'algeria', true),
+  ];
 
   constructor() {}
 

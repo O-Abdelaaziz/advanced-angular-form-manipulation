@@ -17,8 +17,9 @@ import {
   ContentChildren,
   QueryList,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { merge } from 'rxjs/internal/observable/merge';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
@@ -43,6 +44,7 @@ export type SelectValue<T> = T | null;
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent<T> implements AfterContentInit, OnDestroy {
   @Input()
@@ -95,11 +97,16 @@ export class SelectComponent<T> implements AfterContentInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((values) => {
         values.removed.forEach((rv) => this.findOptionsByValue(rv)?.deselect());
-        values.added.forEach(av => this.findOptionsByValue(av)?.highlightAsSelected());
+        values.added.forEach((av) =>
+          this.findOptionsByValue(av)?.highlightAsSelected()
+        );
       });
     this.options.changes
       .pipe(
-        startWith<QueryList<OptionComponent<T>> >(this.options),
+        startWith<QueryList<OptionComponent<T>>>(this.options),
+        tap(() =>
+          queueMicrotask(() => this.highlightSelectedOptions(this.value))
+        ),
         switchMap((options) => merge(...options.map((o) => o.selected))),
         takeUntil(this.unsubscribe$)
       )
