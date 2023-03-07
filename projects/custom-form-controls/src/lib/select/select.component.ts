@@ -14,9 +14,11 @@ import {
   OnChanges,
   Input,
   Output,
+  ViewChild,
   HostListener,
   HostBinding,
   EventEmitter,
+  ElementRef,
   ContentChildren,
   QueryList,
   OnDestroy,
@@ -58,6 +60,9 @@ export class SelectComponent<T>
   public label: string = '';
 
   @Input()
+  public searchable: boolean = false;
+
+  @Input()
   public displayWith: ((value: T) => string | number) | null = null;
 
   @Input()
@@ -97,6 +102,9 @@ export class SelectComponent<T>
   public closed = new EventEmitter<void>();
 
   @Output()
+  public searchChanged = new EventEmitter<string>();
+
+  @Output()
   public selectionChanged = new EventEmitter<SelectValue<T>>();
 
   private unsubscribe$ = new Subject<void>();
@@ -119,6 +127,11 @@ export class SelectComponent<T>
   @HostListener('click')
   public open() {
     this.isOpen = true;
+    if (this.searchable) {
+      setTimeout(() => {
+        this.searchInputEl.nativeElement.focus();
+      }, 0);
+    }
   }
 
   public close() {
@@ -127,6 +140,9 @@ export class SelectComponent<T>
 
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
+
+  @ViewChild('input')
+  public searchInputEl!: ElementRef<HTMLInputElement>;
 
   constructor(@Attribute('multiple') private multiple: string) {}
 
@@ -208,6 +224,10 @@ export class SelectComponent<T>
     event.stopPropagation();
     this.selectionModel.clear();
     this.selectionChanged.emit(this.value);
+  }
+
+  protected onHandleInput(event: Event) {
+    this.searchChanged.emit((event.target as HTMLInputElement).value);
   }
 
   ngOnDestroy(): void {

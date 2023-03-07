@@ -28,6 +28,8 @@ export class CustomSelectPageComponent implements OnInit {
     new User(1, 'mahi ', 'amine', 'algeria', false),
   ];
 
+  public filteredUsers = this.users;
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -35,5 +37,11 @@ export class CustomSelectPageComponent implements OnInit {
   public onSelectionChanged(value: unknown) {
     // console.log(event);
     c('Selected value: ', value);
+  }
+
+  public onSearchChanged(query: string) {
+    this.filteredUsers = this.users.filter((user) =>
+      user.name.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())
+    );
   }
 }

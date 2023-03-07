@@ -2,11 +2,14 @@
   label="Select User"
   [value]="selectedValue"
   multiple
+  [searchable]="true"
   (selectionChanged)="onSelectionChanged($event)"
+  (closed)="onSearchChanged('')"
+  (searchChanged)="onSearchChanged($event)"
 >
   <h5>Available Options:</h5>
   <lib-option
-    *ngFor="let user of users"
+    *ngFor="let user of filteredUsers"
     [value]="user.name"
     [disabled]="user.disabled"
     [disabledReason]="user.disabled ? 'Not Admin' : ''"
