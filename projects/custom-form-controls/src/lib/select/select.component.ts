@@ -6,6 +6,7 @@ import {
   animate,
   AnimationEvent,
 } from '@angular/animations';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { SelectionModel } from '@angular/cdk/collections';
 import {
   Component,
@@ -20,6 +21,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
   SimpleChanges,
+  Attribute,
 } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -27,7 +29,7 @@ import { startWith } from 'rxjs/internal/operators/startWith';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { OptionComponent } from './option/option.component';
 
-export type SelectValue<T> = T | null;
+export type SelectValue<T> = T | T[] | null;
 
 // There is an alias for 'void => *' is ':enter'
 // There is an alias for '* => void' is ':leave'
@@ -64,16 +66,28 @@ export class SelectComponent<T>
   set value(value: SelectValue<T>) {
     this.selectionModel.clear();
     if (value) {
-      this.selectionModel.select(value);
+      if (Array.isArray(value)) {
+        this.selectionModel.select(...value);
+      } else {
+        this.selectionModel.select(value);
+      }
       // this.highlightSelectedOptions(value);
     }
   }
 
   get value() {
-    return this.selectionModel.selected[0] || null;
+    if (this.selectionModel.isEmpty()) {
+      return null;
+    }
+    if (this.selectionModel.isMultipleSelection()) {
+      return this.selectionModel.selected;
+    }
+    return this.selectionModel.selected[0];
   }
 
-  private selectionModel = new SelectionModel<T>();
+  private selectionModel = new SelectionModel<T>(
+    coerceBooleanProperty(this.multiple)
+  );
 
   @Output()
   public opened = new EventEmitter<void>();
@@ -92,6 +106,9 @@ export class SelectComponent<T>
 
   protected get displayValue() {
     if (this.displayWith && this.value) {
+      if (Array.isArray(this.value)) {
+        return this.value.map(this.displayWith);
+      }
       return this.displayWith(this.value);
     }
     return this.value;
@@ -109,7 +126,7 @@ export class SelectComponent<T>
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
 
-  constructor() {}
+  constructor(@Attribute('multiple') private multiple: string) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['compareWidth']) {
@@ -144,7 +161,9 @@ export class SelectComponent<T>
       this.selectionModel.toggle(selectedOption.value);
       this.selectionChanged.emit(this.value);
     }
-    this.close();
+    if (!this.selectionModel.isMultipleSelection) {
+      this.close();
+    }
   }
 
   public onPanelAnimationDone({ fromState, toState }: AnimationEvent) {
@@ -169,7 +188,7 @@ export class SelectComponent<T>
     // this.findOptionsByValue(value)?.highlightAsSelected();
   }
 
-  private findOptionsByValue(value: SelectValue<T>) {
+  private findOptionsByValue(value: T | null) {
     if (this.optionMap.has(value)) {
       return this.optionMap.get(value);
     }

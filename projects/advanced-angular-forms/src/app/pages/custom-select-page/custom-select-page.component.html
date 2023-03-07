@@ -1,5 +1,15 @@
-<lib-select (selectionChanged)="onSelectionChanged($event)" [value]="selectedValue" label="Select User">
+<lib-select
+  label="Select User"
+  [value]="selectedValue"
+  multiple
+  (selectionChanged)="onSelectionChanged($event)"
+>
   <h5>Available Options:</h5>
-  <lib-option *ngFor="let user of users" [value]="user.name" [disabled]="user.disabled" [disabledReason]="user.disabled ? 'Not Admin':''">{{user.name}}</lib-option>
+  <lib-option
+    *ngFor="let user of users"
+    [value]="user.name"
+    [disabled]="user.disabled"
+    [disabledReason]="user.disabled ? 'Not Admin' : ''"
+    >{{ user.name }}</lib-option
+  >
 </lib-select>
-
