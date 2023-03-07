@@ -15,6 +15,7 @@ import {
   Input,
   Output,
   HostListener,
+  HostBinding,
   EventEmitter,
   ContentChildren,
   QueryList,
@@ -100,6 +101,7 @@ export class SelectComponent<T>
 
   private unsubscribe$ = new Subject<void>();
 
+  @HostBinding('class.select-panel-open')
   public isOpen: boolean = false;
 
   private optionMap = new Map<T | null, OptionComponent<T>>();
