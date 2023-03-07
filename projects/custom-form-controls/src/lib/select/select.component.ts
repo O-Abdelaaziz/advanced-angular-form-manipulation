@@ -62,6 +62,10 @@ export class SelectComponent<T>
   @Input()
   public searchable: boolean = false;
 
+  @HostBinding('class.disabled')
+  @Input()
+  public disabled: boolean = false;
+
   @Input()
   public displayWith: ((value: T) => string | number) | null = null;
 
@@ -126,6 +130,7 @@ export class SelectComponent<T>
 
   @HostListener('click')
   public open() {
+    if (this.disabled) return;
     this.isOpen = true;
     if (this.searchable) {
       setTimeout(() => {
@@ -175,6 +180,9 @@ export class SelectComponent<T>
   }
 
   private handleSelection(selectedOption: OptionComponent<T>): void {
+    if (this.disabled) {
+      return;
+    }
     if (selectedOption.value) {
       this.selectionModel.toggle(selectedOption.value);
       this.selectionChanged.emit(this.value);
@@ -222,6 +230,7 @@ export class SelectComponent<T>
 
   public onClearSelecion(event: Event) {
     event.stopPropagation();
+    if (this.disabled) return;
     this.selectionModel.clear();
     this.selectionChanged.emit(this.value);
   }
