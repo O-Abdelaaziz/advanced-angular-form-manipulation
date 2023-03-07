@@ -202,6 +202,12 @@ export class SelectComponent<T>
     this.options.forEach((o) => this.optionMap.set(o.value, o));
   }
 
+  public onClearSelecion(event: Event) {
+    event.stopPropagation();
+    this.selectionModel.clear();
+    this.selectionChanged.emit(this.value);
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

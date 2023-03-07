@@ -3,7 +3,7 @@
   <span class="selected-value" [ngClass]="{ empty: !value }">{{
     value || "Nothing is selected..."
   }}</span>
-
+  <button *ngIf="value" class="clear-button" (click)="onClearSelecion($event)">clear</button>
   <span class="drop-down-icon">👇</span>
 
   <ng-template
