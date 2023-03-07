@@ -9,6 +9,7 @@ import {
   HostBinding,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  ElementRef,
 } from '@angular/core';
 
 @Component({
@@ -39,7 +40,10 @@ export class OptionComponent<T> implements OnInit, Highlightable {
   @HostBinding('class.active')
   protected isActive: boolean = false;
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private _changeDetectorRef: ChangeDetectorRef,
+    private _elementRef: ElementRef<HTMLElement>
+  ) {}
 
   setActiveStyles(): void {
     this.isActive = true;
@@ -68,5 +72,9 @@ export class OptionComponent<T> implements OnInit, Highlightable {
   public deselect() {
     this.isSelected = false;
     this._changeDetectorRef.markForCheck();
+  }
+
+  public scrollIntoView(option: ScrollIntoViewOptions) {
+    this._elementRef.nativeElement.scrollIntoView(option);
   }
 }

@@ -178,6 +178,10 @@ export class SelectComponent<T>
       this.listKeyManager.onKeydown(e);
       return;
     }
+
+    if (e.key === 'Enter' && this.isOpen && this.listKeyManager.activeItem) {
+      this.handleSelection(this.listKeyManager.activeItem);
+    }
   }
 
   @ContentChildren(OptionComponent, { descendants: true })
@@ -222,6 +226,14 @@ export class SelectComponent<T>
     this.listKeyManager = new ActiveDescendantKeyManager(
       this.options
     ).withWrap();
+
+    this.listKeyManager.change.pipe(takeUntil(this.unsubscribe$)).subscribe(itemIndex => {
+      this.options.get(itemIndex)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    });
+
     this.highlightSelectedOptions();
     this.selectionModel.changed
       .pipe(takeUntil(this.unsubscribe$))
