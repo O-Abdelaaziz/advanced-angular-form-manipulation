@@ -1,13 +1,12 @@
 <lib-select
   label="Select User"
-  [value]="selectedValue"
+  [formControl]="selectedValue"
   multiple
   [searchable]="true"
-  [disabled]="true"
-  (selectionChanged)="onSelectionChanged($event)"
   (closed)="onSearchChanged('')"
   (searchChanged)="onSearchChanged($event)"
->
+  >
+  <!-- (selectionChanged)="onSelectionChanged($event)" -->
   <h5>Available Options:</h5>
   <lib-option
     *ngFor="let user of filteredUsers"

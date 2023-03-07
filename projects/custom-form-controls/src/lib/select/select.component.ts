@@ -1,3 +1,4 @@
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import {
   trigger,
   state,
@@ -25,6 +26,7 @@ import {
   ChangeDetectionStrategy,
   SimpleChanges,
   Attribute,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { merge } from 'rxjs/internal/observable/merge';
@@ -51,10 +53,17 @@ export type SelectValue<T> = T | T[] | null;
       ]),
     ]),
   ],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: SelectComponent,
+      multi: true,
+    },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent<T>
-  implements OnChanges, AfterContentInit, OnDestroy
+  implements OnChanges, AfterContentInit, OnDestroy, ControlValueAccessor
 {
   @Input()
   public label: string = '';
@@ -74,15 +83,9 @@ export class SelectComponent<T>
 
   @Input()
   set value(value: SelectValue<T>) {
-    this.selectionModel.clear();
-    if (value) {
-      if (Array.isArray(value)) {
-        this.selectionModel.select(...value);
-      } else {
-        this.selectionModel.select(value);
-      }
-      // this.highlightSelectedOptions(value);
-    }
+    this.setupValue(value);
+    this.onChange(this.value);
+    this.highlightSelectedOptions();
   }
 
   get value() {
@@ -116,6 +119,10 @@ export class SelectComponent<T>
   @HostBinding('class.select-panel-open')
   public isOpen: boolean = false;
 
+  @HostBinding('att.tabIndex')
+  @Input()
+  public tabIndex = 0;
+
   private optionMap = new Map<T | null, OptionComponent<T>>();
 
   protected get displayValue() {
@@ -128,6 +135,17 @@ export class SelectComponent<T>
     return this.value;
   }
 
+  protected onChange: (newValue: SelectValue<T>) => void = () => {};
+  protected onToched: () => void = () => {};
+
+  @HostListener('blur')
+  public markAsTouched() {
+    if (!this.disabled && !this.isOpen) {
+      this.onToched();
+      this.changeDetectorRef.markForCheck();
+    }
+  }
+
   @HostListener('click')
   public open() {
     if (this.disabled) return;
@@ -137,10 +155,13 @@ export class SelectComponent<T>
         this.searchInputEl.nativeElement.focus();
       }, 0);
     }
+    this.changeDetectorRef.markForCheck();
   }
 
   public close() {
     this.isOpen = false;
+    this.onToched();
+    this.changeDetectorRef.markForCheck();
   }
 
   @ContentChildren(OptionComponent, { descendants: true })
@@ -149,7 +170,29 @@ export class SelectComponent<T>
   @ViewChild('input')
   public searchInputEl!: ElementRef<HTMLInputElement>;
 
-  constructor(@Attribute('multiple') private multiple: string) {}
+  constructor(
+    @Attribute('multiple') private multiple: string,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
+  writeValue(value: SelectValue<T>): void {
+    this.setupValue(value);
+    this.highlightSelectedOptions();
+    this.changeDetectorRef.markForCheck();
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onToched = fn;
+  }
+
+  setDisabledState?(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+    this.changeDetectorRef.markForCheck();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['compareWidth']) {
@@ -179,19 +222,6 @@ export class SelectComponent<T>
       .subscribe((selectedOption) => this.handleSelection(selectedOption));
   }
 
-  private handleSelection(selectedOption: OptionComponent<T>): void {
-    if (this.disabled) {
-      return;
-    }
-    if (selectedOption.value) {
-      this.selectionModel.toggle(selectedOption.value);
-      this.selectionChanged.emit(this.value);
-    }
-    if (!this.selectionModel.isMultipleSelection) {
-      this.close();
-    }
-  }
-
   public onPanelAnimationDone({ fromState, toState }: AnimationEvent) {
     if (fromState === 'void' && toState === null && this.isOpen) {
       this.opened.emit();
@@ -199,6 +229,41 @@ export class SelectComponent<T>
 
     if (fromState === null && toState === 'void' && !this.isOpen) {
       this.closed.emit();
+    }
+  }
+
+  public onClearSelecion(event?: Event) {
+    event?.stopPropagation();
+    if (this.disabled) return;
+    this.selectionModel.clear();
+    this.selectionChanged.emit(this.value);
+    this.onChange(this.value);
+    this.changeDetectorRef.markForCheck();
+  }
+
+  private handleSelection(selectedOption: OptionComponent<T>): void {
+    if (this.disabled) {
+      return;
+    }
+    if (selectedOption.value) {
+      this.selectionModel.toggle(selectedOption.value);
+      this.selectionChanged.emit(this.value);
+      this.onChange(this.value);
+    }
+    if (!this.selectionModel.isMultipleSelection) {
+      this.close();
+    }
+  }
+
+  private setupValue(value: SelectValue<T>) {
+    this.selectionModel.clear();
+    if (value) {
+      if (Array.isArray(value)) {
+        this.selectionModel.select(...value);
+      } else {
+        this.selectionModel.select(value);
+      }
+      // this.highlightSelectedOptions(value);
     }
   }
 
@@ -226,13 +291,6 @@ export class SelectComponent<T>
   private refreshOptionMap() {
     this.optionMap.clear();
     this.options.forEach((o) => this.optionMap.set(o.value, o));
-  }
-
-  public onClearSelecion(event: Event) {
-    event.stopPropagation();
-    if (this.disabled) return;
-    this.selectionModel.clear();
-    this.selectionChanged.emit(this.value);
   }
 
   protected onHandleInput(event: Event) {

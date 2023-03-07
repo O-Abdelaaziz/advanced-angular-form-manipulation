@@ -1,3 +1,4 @@
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import {
   Component,
   Input,
@@ -5,14 +6,14 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SelectModule } from 'custom-form-controls';
+import { SelectModule, SelectValue } from 'custom-form-controls';
 import { User } from '../../model/user';
 
 const c = console.log.bind(this);
 @Component({
   selector: 'app-custom-select-page',
   standalone: true,
-  imports: [CommonModule, SelectModule],
+  imports: [CommonModule, SelectModule, ReactiveFormsModule],
   templateUrl: './custom-select-page.component.html',
   styleUrls: [
     './custom-select-page.component.scss',
@@ -21,7 +22,11 @@ const c = console.log.bind(this);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomSelectPageComponent implements OnInit {
-  public selectedValue: string | null = null;
+  public selectedValue: FormControl<SelectValue<User>> = new FormControl([
+    new User(1, 'ouakala abdelaaziz', 'abdelaaziz', 'algeria', false),
+    new User(1, 'ouakala ahmed', 'ahmed', 'algeria', true),
+  ]);
+
   public users: User[] = [
     new User(1, 'ouakala abdelaaziz', 'abdelaaziz', 'algeria', false),
     new User(1, 'ouakala ahmed', 'ahmed', 'algeria', true),
@@ -32,7 +37,9 @@ export class CustomSelectPageComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.selectedValue.valueChanges.subscribe(this.onSelectionChanged)
+  }
 
   public onSelectionChanged(value: unknown) {
     // console.log(event);
