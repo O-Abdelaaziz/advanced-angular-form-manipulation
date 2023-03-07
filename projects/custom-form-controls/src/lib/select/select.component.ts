@@ -33,6 +33,7 @@ import { merge } from 'rxjs/internal/observable/merge';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { OptionComponent } from './option/option.component';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
 
 export type SelectValue<T> = T | T[] | null;
 
@@ -116,6 +117,8 @@ export class SelectComponent<T>
 
   private unsubscribe$ = new Subject<void>();
 
+  private listKeyManager!: ActiveDescendantKeyManager<OptionComponent<T>>;
+
   @HostBinding('class.select-panel-open')
   public isOpen: boolean = false;
 
@@ -161,7 +164,20 @@ export class SelectComponent<T>
   public close() {
     this.isOpen = false;
     this.onToched();
+    this.hostEl.nativeElement.focus();
     this.changeDetectorRef.markForCheck();
+  }
+
+  @HostListener('keydown', ['$event'])
+  protected onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' && !this.isOpen) {
+      this.open();
+      return;
+    }
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && this.isOpen) {
+      this.listKeyManager.onKeydown(e);
+      return;
+    }
   }
 
   @ContentChildren(OptionComponent, { descendants: true })
@@ -172,7 +188,8 @@ export class SelectComponent<T>
 
   constructor(
     @Attribute('multiple') private multiple: string,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private hostEl: ElementRef
   ) {}
 
   writeValue(value: SelectValue<T>): void {
@@ -202,6 +219,9 @@ export class SelectComponent<T>
   }
 
   ngAfterContentInit(): void {
+    this.listKeyManager = new ActiveDescendantKeyManager(
+      this.options
+    ).withWrap();
     this.highlightSelectedOptions();
     this.selectionModel.changed
       .pipe(takeUntil(this.unsubscribe$))

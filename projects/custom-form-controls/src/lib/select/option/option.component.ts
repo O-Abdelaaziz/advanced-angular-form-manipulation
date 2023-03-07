@@ -1,3 +1,4 @@
+import { Highlightable } from '@angular/cdk/a11y';
 import {
   Component,
   Input,
@@ -16,7 +17,7 @@ import {
   styleUrls: ['./option.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OptionComponent<T> implements OnInit {
+export class OptionComponent<T> implements OnInit, Highlightable {
   @Input()
   public value: T | null = null;
 
@@ -35,7 +36,19 @@ export class OptionComponent<T> implements OnInit {
   @HostBinding('class.selected')
   protected isSelected: boolean = false;
 
+  @HostBinding('class.active')
+  protected isActive: boolean = false;
+
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+
+  setActiveStyles(): void {
+    this.isActive = true;
+    this._changeDetectorRef.markForCheck();
+  }
+  setInactiveStyles(): void {
+    this.isActive = false;
+    this._changeDetectorRef.markForCheck();
+  }
 
   ngOnInit(): void {}
 
