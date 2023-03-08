@@ -54,22 +54,24 @@ export class DynamicFormsPageComponent implements OnInit {
   }
 
   private resolveValidators({ validators = {} }: DynamicControl) {
-    return Object.keys(validators).map((validatorKey) => {
-      const validatorValue = validators[validatorKey];
-      if (validatorKey == 'required') {
-        return Validators.required;
+    return (Object.keys(validators) as Array<keyof typeof validators>).map(
+      (validatorKey) => {
+        const validatorValue = validators[validatorKey];
+        if (validatorKey == 'required') {
+          return Validators.required;
+        }
+        if (validatorKey == 'minLength' && typeof validatorValue == 'number') {
+          return Validators.minLength(validatorValue);
+        }
+        if (validatorKey == 'email') {
+          return Validators.email;
+        }
+        if (validatorKey == 'banWords' && Array.isArray(validatorValue)) {
+          return banWords(validatorValue);
+        }
+        return Validators.nullValidator;
       }
-      if (validatorKey == 'minLength' && typeof validatorValue == 'number') {
-        return Validators.minLength(validatorValue);
-      }
-      if (validatorKey == 'email') {
-        return Validators.email;
-      }
-      if (validatorKey == 'banWords' && Array.isArray(validatorValue)) {
-        return banWords(validatorValue);
-      }
-      return Validators.nullValidator;
-    });
+    );
   }
 
   public onSubmitForm() {
