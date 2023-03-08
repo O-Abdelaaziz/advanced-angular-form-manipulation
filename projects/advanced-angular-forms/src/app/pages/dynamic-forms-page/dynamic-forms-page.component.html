@@ -7,8 +7,34 @@
   </button>
 
   <div *ngIf="formConfig$ | async as formConfig" class="dynamic-form-container">
-    <form>
-      <pre>{{formConfig | json }}</pre>
+    <form [formGroup]="form" (ngSubmit)="onSubmitForm()">
+      <!-- <pre>{{formConfig | json }}</pre> -->
+      <h3 class="form-heading">{{ formConfig.description }}</h3>
+      <div
+        *ngFor="let control of formConfig.controls | keyvalue"
+        class="form-field"
+      >
+        <label [for]="control.key">{{ control.value.label }}</label>
+        <ng-container [ngSwitch]="control.value.controlType">
+          <input
+            *ngSwitchCase="'input'"
+            [type]="control.value.type"
+            [value]="control.value.value"
+            [formControlName]="control.key"
+            [id]="control.key"
+          />
+          <ng-container *ngSwitchCase="'select'">
+            <select
+            [formControlName]="control.key"
+              [value]="control.value.value"
+              [id]="control.key"
+            >
+            <option *ngFor="let o of control.value.options" [value]="o.value">{{o.label}}</option>
+          </select>
+          </ng-container>
+        </ng-container>
+      </div>
+      <button>Save</button>
     </form>
   </div>
 </div>
