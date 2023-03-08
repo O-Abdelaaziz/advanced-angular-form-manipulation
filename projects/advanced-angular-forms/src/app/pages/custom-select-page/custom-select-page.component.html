@@ -1,18 +1,12 @@
 <lib-select
-  label="Select User"
-  [formControl]="selectedValue"
+  label="Pick the User"
   multiple
   [searchable]="true"
+  [compareWith]="compareWithFn"
+  [displayWith]="displayWithFn"
+  [formControl]="selectValue"
   (closed)="onSearchChanged('')"
-  (searchChanged)="onSearchChanged($event)"
-  >
-  <!-- (selectionChanged)="onSelectionChanged($event)" -->
-  <h5>Available Options:</h5>
-  <lib-option
-    *ngFor="let user of filteredUsers"
-    [value]="user.name"
-    [disabled]="user.disabled"
-    [disabledReason]="user.disabled ? 'Not Admin' : ''"
-    >{{ user.name }}</lib-option
-  >
+  (searchChanged)="onSearchChanged($event)">
+  <lib-option *ngFor="let user of filteredUsers" [value]="user">{{user.name}}</lib-option>
 </lib-select>
+

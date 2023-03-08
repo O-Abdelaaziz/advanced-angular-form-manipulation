@@ -1,12 +1,16 @@
 :host {
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
 }
 .action-buttons {
   max-width: 300px;
   margin-right: calc(var(--spacing-step) * 2);
 }
 .dynamic-form-container {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
   padding: calc(var(--spacing-step) * 2);
 }
 .form-heading {

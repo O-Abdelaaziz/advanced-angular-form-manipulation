@@ -1,7 +1,7 @@
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import {
   Component,
-  Input,
+  ChangeDetectorRef,
   OnInit,
   ChangeDetectionStrategy,
 } from '@angular/core';
@@ -22,7 +22,7 @@ const c = console.log.bind(this);
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomSelectPageComponent implements OnInit {
-  public selectedValue: FormControl<SelectValue<User>> = new FormControl([
+  public selectValue: FormControl<SelectValue<User>> = new FormControl([
     new User(1, 'ouakala abdelaaziz', 'abdelaaziz', 'algeria', false),
     new User(1, 'ouakala ahmed', 'ahmed', 'algeria', true),
   ]);
@@ -35,20 +35,27 @@ export class CustomSelectPageComponent implements OnInit {
 
   public filteredUsers = this.users;
 
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.selectedValue.valueChanges.subscribe(this.onSelectionChanged)
+    this.selectValue.valueChanges.subscribe(this.onSelectionChanged);
   }
 
-  public onSelectionChanged(value: unknown) {
-    // console.log(event);
-    c('Selected value: ', value);
-  }
-
-  public onSearchChanged(query: string) {
+  onSearchChanged(queryString: string) {
     this.filteredUsers = this.users.filter((user) =>
-      user.name.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())
+      user.name.toLowerCase().startsWith(queryString.toLowerCase())
     );
+  }
+
+  displayWithFn(user: User) {
+    return user.name;
+  }
+
+  compareWithFn(user: User | null, user2: User | null) {
+    return user?.id === user2?.id;
+  }
+
+  onSelectionChanged(value: unknown) {
+    console.log('Selected value: ', value);
   }
 }

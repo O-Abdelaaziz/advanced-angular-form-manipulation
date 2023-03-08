@@ -2,7 +2,7 @@
 <div class="control" cdkOverlayOrigin #origin="cdkOverlayOrigin">
   <ng-container [ngSwitch]="searchable && isOpen">
     <span *ngSwitchCase="false" class="selected-value" [ngClass]="{ empty: !value }">{{
-      value || "Nothing is selected..."
+      displayValue || "Nothing is selected..."
     }}</span>
     <input #input *ngSwitchCase="true" type="text" class="select-search" placeholder="Start typing..." (input)="onHandleInput($event)" />
   </ng-container>

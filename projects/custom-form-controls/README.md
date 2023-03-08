@@ -1,24 +1,53 @@
-# CustomFormControls
+# Advanced Angular Form Manipulation Using Angular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.0.
+[<img src="screenshots/00_main_course_content.png"/>](screenshots/00_main_course_content.png)
 
-## Code scaffolding
+#### Deep Dive in Angular Forms V14
+The course goes way beyond the official documentation and shows you how the Angular forms work internally, so You understand why things work as they work.
 
-Run `ng generate component component-name --project custom-form-controls` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project custom-form-controls`.
-> Note: Don't forget to add `--project custom-form-controls` or else it will be added to the default project in your `angular.json` file. 
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
 
-## Build
+#### Course Content
+> Almost 110 Videos (≈ 12.5 Hours) dedicated to Angular Forms created by Google Developer Expert in Angular and Microsoft MVP in Developer Technologies
 
-Run `ng build custom-form-controls` to build the project. The build artifacts will be stored in the `dist/` directory.
+> The course covers both Template-Driven and Reactive Forms
 
-## Publishing
+> You will learn how dynamically generate a form with validators from a simple JSON object
 
-After building your library with `ng build custom-form-controls`, go to the dist folder `cd dist/custom-form-controls` and run `npm publish`.
+> Deep understanding of what is going on under the Hood by reviewing and analyzing the source code of Angular Forms
 
-## Running unit tests
+> Forget about Angular Material hacking! 😌 You will be able to build your own complex form controls like Select Component which supports multi-selection, accessible keyboard navigation and option filtering
 
-Run `ng test custom-form-controls` to execute the unit tests via [Karma](https://karma-runner.github.io).
+> Solid understanding of the different types of validations and how to create custom validators
 
-## Further help
+> How to implement a scalable architecture for validation errors management
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+## Screenshots
+##### Template Driven Forms
+[<img src="screenshots/01_template_driven_forms.png"/>](screenshots/01_template_driven_forms.png)
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+##### Reactive Forms
+[<img src="screenshots/02_reactive_forms.png"/>](screenshots/02_reactive_forms.png)
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+##### Custom Rating Picker Control
+[<img src="screenshots/03_custom_rating_picker_control.png"/>](screenshots/03_custom_rating_picker_control.png)
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+##### Custom Select Dropdown Control
+[<img src="screenshots/04_custom_select_dropdown_control.png"/>](screenshots/04_custom_select_dropdown_control.png)
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+##### Dynamic Forms Controls
+[<img src="screenshots/05_dynamic_forms_controls.png"/>](screenshots/05_dynamic_forms_controls.png)
+[⬆ back to top](#advanced-angular-form-manipulation-using-angular)
+
+
+
+## License
+MIT
+**Free Software, Hell Yeah!**
+
