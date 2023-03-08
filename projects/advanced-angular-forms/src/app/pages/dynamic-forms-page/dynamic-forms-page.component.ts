@@ -11,11 +11,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { banWords } from '../../validators/ban-words.validator';
+import { DynamicControlResolverService } from './dynamic-control-resolver.service';
+import { ControlInjectorPipe } from './control-injector.pipe';
 
 @Component({
   selector: 'app-dynamic-forms-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ControlInjectorPipe],
   templateUrl: './dynamic-forms-page.component.html',
   styleUrls: [
     './dynamic-forms-page.component.scss',
@@ -31,7 +33,10 @@ export class DynamicFormsPageComponent implements OnInit {
 
   protected formConfig$!: Observable<DynamicFormConfig>;
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(
+    private _httpClient: HttpClient,
+    protected _dynamicControlResolverService: DynamicControlResolverService
+  ) {}
 
   ngOnInit(): void {
     this.formConfig$ = this.formLoadingTrigger.pipe(
