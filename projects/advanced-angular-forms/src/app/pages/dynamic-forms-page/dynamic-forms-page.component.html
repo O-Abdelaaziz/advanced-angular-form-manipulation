@@ -25,13 +25,58 @@
           />
           <ng-container *ngSwitchCase="'select'">
             <select
-            [formControlName]="control.key"
+              [formControlName]="control.key"
               [value]="control.value.value"
               [id]="control.key"
             >
-            <option *ngFor="let o of control.value.options" [value]="o.value">{{o.label}}</option>
-          </select>
+              <option *ngFor="let o of control.value.options" [value]="o.value">
+                {{ o.label }}
+              </option>
+            </select>
           </ng-container>
+          <div
+            *ngIf="
+              form.get(control.key)?.dirty &&
+              form.get(control.key)?.hasError('required')
+            "
+            class="input-error"
+          >
+            This field is required!
+          </div>
+
+          <div
+            *ngIf="
+              form.get(control.key)?.dirty &&
+              form.get(control.key)?.hasError('email')
+            "
+            class="input-error"
+          >
+            email not valid!
+          </div>
+
+          <div
+            *ngIf="
+              form.get(control.key)?.dirty &&
+              form.get(control.key)?.hasError('minlength')
+            "
+            class="input-error"
+          >
+            The name must be at least
+            <strong>{{
+              form.get(control.key)?.getError("minlength").requiredLength
+            }}</strong>
+            characters
+          </div>
+
+          <div
+            *ngIf="
+              form.get(control.key)?.dirty &&
+              form.get(control.key)?.hasError('banWords')
+            "
+            class="input-error"
+          >
+            This word not allowed!
+          </div>
         </ng-container>
       </div>
       <button [disabled]="form.invalid">Save</button>
